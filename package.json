@@ -1,0 +1,16 @@
+{
+  "name": "yanginblack",
+  "version": "1.0.0",
+  "description": "profile website",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "yiyang",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.3.4",
+    "express": "^4.13.3",
+    "socket.io": "^1.3.7"
+  }
+}
