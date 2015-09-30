@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+	<head>
+  		<% include head.html %>
+    </head>
+	<body ng-app="projectApp">
+		<% include header.html %>
+		<div class="container" ng-controller="ProjectListCtrl">
+			<div class="row">
+				<div class="col-sm-8">
+					<div class="row projects" ng-repeat = "project in projects">
+						<div class="col-sm-4 text-center">
+							<a class="portfolio-box" href="{{project.url}}">
+								<img class="img-responsive" alt="" src="{{project.img}}">
+								<div class="portfolio-box-caption">
+									<div class="portfolio-box-caption-content">
+										<div class="project-category text-faded"> {{project.category}} </div>
+										<div class="project-name">{{project.name}}</div>
+									</div>
+								</div>
+							</a>
+						</div>
+						<div class="col-sm-8 hidden-xs">
+							<p class="project-title">{{project.title}}</p>
+							<p class="project-description">
+								{{project.description}}
+							</p>
+							<div class="project-icons"><img class="project-icon" src="files/img/icons/html5.png" alt="HTML5"><img class="project-icon" src="files/img/icons/css3.png" alt="CSS3"></div>
+						</div>
+					</div>
+
+				</div>
+				<div class="col-sm-4 hidden-xs">
+					
+						<div class="project-side">
+							<div class="sort-icons">Sort By: 
+								<div class="sort-icon"><img class="sort-icon-up" src="files/img/icons/html.png" alt="HTML5"><span class="sort-icon-close">X</span></div>
+								<div class="sort-icon"><img class="sort-icon-up" src="files/img/icons/css.png" alt="CSS3"><span class="sort-icon-close">X</span></div>
+
+							</div>
+							<div class="sort-divider well"> </div>
+							<div class="sort-icons">
+								<img class="sort-icon-down" src="files/img/icons/html.png" alt="HTML5"><p>HTML</p><br>
+								<img class="sort-icon-down" src="files/img/icons/css.png" alt="CSS3"><p>CSS3</p><br>
+							</div>
+						</div>
+						<div class="project-side">
+							<h3>This is the Title</h3>
+							<p>Not quite sure what should I put here, just a few text in case</p>
+							<ul>
+								<li>First item</li>
+								<li>Second item</li>
+								<li>Third item</li>
+							</ul>
+						</div>
+					
+				</div>
+			</div>
+		</div>
+
+		<% include footer.html %>
+	</body>
+</html>
