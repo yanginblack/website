@@ -25,7 +25,9 @@
 							<p class="project-description">
 								{{project.description}}
 							</p>
-							<div class="project-icons"><img class="project-icon" src="files/img/icons/html5.png" alt="HTML5"><img class="project-icon" src="files/img/icons/css3.png" alt="CSS3"></div>
+							<div class="project-icons">
+								<img ng-repeat = "icon in project.icons" class="project-icon" src="files/img/icons/{{icon.url}}" alt="icon.name">
+							</div>
 						</div>
 					</div>
 
@@ -34,14 +36,14 @@
 					
 						<div class="project-side">
 							<div class="sort-icons">Sort By: 
-								<div class="sort-icon"><img class="sort-icon-up" src="files/img/icons/html.png" alt="HTML5"><span class="sort-icon-close">X</span></div>
-								<div class="sort-icon"><img class="sort-icon-up" src="files/img/icons/css.png" alt="CSS3"><span class="sort-icon-close">X</span></div>
+								<div class="sort-icon"><img class="sort-icon-up" src="files/img/icons/html5.png" alt="HTML5"><span class="sort-icon-close">X</span></div>
+								<div class="sort-icon"><img class="sort-icon-up" src="files/img/icons/css3.png" alt="CSS3"><span class="sort-icon-close">X</span></div>
 
 							</div>
 							<div class="sort-divider well"> </div>
 							<div class="sort-icons">
-								<img class="sort-icon-down" src="files/img/icons/html.png" alt="HTML5"><p>HTML</p><br>
-								<img class="sort-icon-down" src="files/img/icons/css.png" alt="CSS3"><p>CSS3</p><br>
+								<img class="sort-icon-down" src="files/img/icons/html5.png" alt="HTML5"><p>HTML</p><br>
+								<img class="sort-icon-down" src="files/img/icons/css3.png" alt="CSS3"><p>CSS3</p><br>
 							</div>
 						</div>
 						<div class="project-side">
