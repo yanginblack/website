@@ -6,6 +6,16 @@
 	<body>
 		<% include header.html %>
 
+
+		
+		<div id="side_bar">
+			<a class="btn btn-primary side_buttons" href="#" data-id="0">Shape 1</a>
+			<a class="btn btn-primary side_buttons" href="#" data-id="1">Shape 2</a>
+			<a class="btn btn-primary side_buttons" href="#" data-id="2">Shape 3</a>
+			<a class="btn btn-primary side_buttons" href="#" data-id="3">Shape 4</a>
+			<a class="btn btn-primary side_buttons" href="#" data-id="4">Shape 5</a>
+			<a class="btn btn-primary side_buttons" href="#" data-id="5">Shape 6</a>
+		</div>
 		<div class="container snow_block" id="window">
 
 		</div>
@@ -13,15 +23,53 @@
 <style type="text/css">
 	.snow_block {
 		width: 1000px;
-		background-color: black;
+		background-color: white;
 		height: 600px;
 		margin-left: auto;
 		margin-right: auto;
+		position: relative;
+		top: 200px;
+		z-index:0;
+	}
+
+	#screen {
+		width: 800px;
+		border: 2px solid #A4A4A4;
+		height: 500px;
+		border-radius: 15px;
+		position: absolute;
+		top: 100px;
+		left: 240px;
+		overflow: hidden;
+		background-color: black;
+		z-index: 1;
+	}
+
+	#screen span {
+		background: #fff;
+		font-size: 0;
+		overflow: hidden;
+		width: 2px;
+		height: 2px;
+	}
+
+	#side_bar {
+		float: right;
+		right: 300px;
+		width: 150px;
+		top: 200px;
+		z-index: 3;
+		position: absolute;
+	}
+	.side_buttons {
+		display: block;
+		margin: 10px;
 	}
 </style>
 
 
 		<script type="text/javascript">
+
 var flaketype = 1;
 //snowflake which follow mouse
 var Follow = function () {
@@ -30,11 +78,12 @@ var Follow = function () {
 	addEvent = function (o, e, f) {o.addEventListener ? o.addEventListener(e, f, false) : o.attachEvent('on'+e, function(){f.call(o)})},
 	removeEvent = function(o, e, f) {o.removeEventListener ? o.removeEventListener(e, f, false) : o.detachEvent('on'+e, function(){f.call(o)})},
 	//OBJ = [], 
-	sp, rs, N = 0, m;
+	sp, rs, N = 0, m, container;
 	var keyboard;
 	var init = function (id, config) {
 		this.config = config || {};
 		this.obj = $(id);
+		this.container = id;
 		sp = this.config.speed || 4;
 		rs = this.config.animR || 1;
 		m = {x: $(id).offsetWidth * .5, y: $(id).offsetHeight * .5};
@@ -46,90 +95,28 @@ var Follow = function () {
 			fn: function(e) {
 			e = e || window.event;
 			m.x = e.clientX-240;
-			m.y = e.clientY-200+document.body.scrollTop+document.documentElement.scrollTop;
+			m.y = e.clientY-100+document.body.scrollTop+document.documentElement.scrollTop;
 			center_x = m.x+240;
-			center_y = m.y+200;
+			center_y = m.y+100;
 			
-		},
-		
-		
-		
-		
-		
+		},		
 		setXY : function () {
 		    var _this = this;
 			//addEvent(this.obj, 'mousemove', function (e) {
 			addEvent(this.obj, 'mousemove', this.fn)
-
 			},
 			
 			deleteXY: function() {
-            removeEvent(this.obj, 'mousemove', this.fn)
-		    
-           // removeEvent(this.obj, 'mousemove', function(e) {alert("removed");});
-           
+            removeEvent(this.obj, 'mousemove', this.fn)		    
+           // removeEvent(this.obj, 'mousemove', function(e) {alert("removed");});           
 			},
-			
-			keyboardcontrol: function(key){
-				 if (key== 65)
-               {play('keyboard'); 
-               	if(rightflag) rightflag=false;
-               	 else leftflag=true;  
-               	 upflag=false;
-               	 downflag=false;
-                }  
-			else if (key == 87)
-			
-			{   play('keyboard');
-				if (downflag) downflag=false;
-				else upflag=true;
-				rightflag=false;
-				leftflag=false;
-			 
-			}
-			else if (key == 68)
-			{   play('keyboard');
-				if(leftflag) leftflag=false;
-				else rightflag=true;
-				upflag=false;
-				downflag=false;
-				}
-			else if (key == 83)
-			{   play('keyboard');
-				if (upflag) upflag=false;
-				else downflag=true;
-				rightflag=false;
-				leftflag=false;
-				}
-		//remember to cancel the switchmouse variable		
-		//	if (!this.switchmouse)
-		//	{	
-				
-			    
-		//	    center_x = m.x+240;
-		//	    center_y = m.y+200;
-		//	   }
-			    
-			},
+			setcenter: function() {
+				m = {
+					x: $(this.container).offsetWidth * .5, 
+					y: $(this.container).offsetHeight * .5
+				};
 
-			keyboardstart: function() {
-				keyboard = setInterval(function() {
-
-						if(leftflag) {if(m.x>25) m.x-=5; else leftflag=false;}
-						else if(rightflag) {if(m.x<785) m.x+=5; else rightflag=false;}
-						else if(upflag) {if(m.y>15) m.y-=5; else upflag=false;}
-						else if(downflag) {if(m.y<485) m.y+=5; else downflag=false;}
-						
-					     center_x = m.x+240;
-			   			 center_y = m.y+200;
-					
-				}, 50);
 			},
-			
-			keyboardend: function() {
-				window.clearInterval(keyboard);
-			},
-			
 			setobj: function(shape) {
 			    //play('turnwhite');
 				OBJ=[];
@@ -374,36 +361,21 @@ var Follow = function () {
 			},
 			
 			turnwhite: function() {
-				play('turnwhite');
+				//play('turnwhite');
 				for (var i = 0; i < N; i++) {if(OBJ[i].parent) OBJ[i].css.background="white";}
-				flaketype=0;
-				num=0;
+				//flaketype=0;
+				//num=0;
 			},
 
 		start : function () {
 		//var k = 180 / Math.PI, OO, o, _this = this, fn = sethis.config.fn;
-		      
-		       this.setobj(0);
-	   var element;
-	   element = document.getElementById('num');
+		  //alert("start");    
+		  //     this.setobj(0);
+	   //var element;
+	   //element = document.getElementById('num');
 		setInterval(function() {
-			for (var i = 0; i < N; i++) OBJ[i].run();
-			
-			element.innerHTML=num;
-			if (flaketype==1) {element.style.color='#ee0c51';}
-			else if (flaketype==2) {element.style.color='#D7DF01';}
-			else if (flaketype==3) {element.style.color='#32f740';}
-			else if (flaketype==4) {element.style.color='#32e3f7';}
-			else if (flaketype==5) {element.style.color='#b900d4';}
-			else element.style.color='#555555';
-			
-			//if ()//end of if(changeflag)
-			if(redflag) document.getElementById('snowflake_1').style.display="block";	
-			if(yellowflag) document.getElementById('snowflake_2').style.display="block";
-			if(greenflag) document.getElementById('snowflake_3').style.display="block";
-			if(blueflag) document.getElementById("snowflake_4").style.display="block";
-			if(purpleflag) document.getElementById("snowflake_5").style.display="block";	
-			}, 20);
+			for (var i = 0; i < N; i++) OBJ[i].run();	
+			}, 10);
 		} //start function
 	
 	} //init.propotype
@@ -412,8 +384,8 @@ var Follow = function () {
 		
 		if (!p)
 		{
-			var obj = document.createElement("img");
-			obj.setAttribute('src','../game/image/moon.png');
+			var obj = document.createElement("span");
+			obj.setAttribute('style','background-color:white;width:10px;border-radius:100%');
 			document.getElementById("screen").appendChild(obj);
 			this.css = obj.style;
 			this.css.position = "absolute";
@@ -453,22 +425,7 @@ var Follow = function () {
 		this.parent = p;
        }
 		}
-/*		
-	CObj.prototype.run = function () {
-		if (!this.parent) {
-		this.x0 = m.x;
-		this.y0 = m.y;
-		} else {
-		this.x0 = this.parent.x;
-		this.y0 = this.parent.y;
-		}
-		this.x = this.PX += (this.ddx += ((this.x0 - this.PX - this.ddx) + this.cx) / rs) / sp;
-		this.y = this.PY += (this.ddy += ((this.y0 - this.PY - this.ddy) + this.cy) / rs) / sp;
-		this.css.left = Math.round(this.x)+'px';
-		this.css.top = Math.round(this.y)+'px';
-		}
-		
-*/
+
 		CObj.prototype.run = function () {
 		if (!this.parent) {
 		this.x0 = m.x;
@@ -481,24 +438,14 @@ var Follow = function () {
 		this.y = this.PY += (this.ddy += ((this.y0 - this.PY - this.ddy) + this.cy) / rs) / sp;
 		if (!this.parent)
 		{
-		this.css.left = Math.round(this.x)-17+'px';
-		this.css.top = Math.round(this.y)-17+'px';
+		this.css.left = Math.round(this.x)+'px';
+		this.css.top = Math.round(this.y)+'px';
 		}
 		else
 		{
 		this.css.left = Math.round(this.x)+'px';
 		this.css.top = Math.round(this.y)+'px';
 		}
-			if (changeflag=true)
-			{ if(this.parent)
-			{if (flaketype==1) {this.css.background='#ee0c51';}
-			else if (flaketype==2) {this.css.background='#f5f732';}
-			else if (flaketype==3) {this.css.background='#32f740';}
-			else if (flaketype==4) {this.css.background='#32e3f7';}
-			else if (flaketype==5) {this.css.background='#b900d4';}
-			changeflag = false;
-			}
-			}
 		}
 	return init;
 }();
@@ -514,8 +461,8 @@ var Follow = function () {
 
 
 
-			            var snowflake = new Follow('window', {speed: 4,
-                        animR : 2,
+			            var snowflake = new Follow('screen', {speed: 4,
+                        animR : 2.2,
 						fn : function (i, j) {
 						return {
 						x : 0.8*j/4*Math.cos(i*Math.PI/180),
@@ -523,8 +470,19 @@ var Follow = function () {
 						}
 						}});
 
+						//snowflake.setXY();
+						snowflake.setobj(0);
 						snowflake.setXY();
-						snowflake.setobj(1);
+
+						$('.side_buttons').click(function(e) {
+							e.preventDefault();
+							var shape = $(this).attr('data-id');
+							//snowflake.init();
+							snowflake.setcenter();
+							snowflake.setobj(shape);
+							
+
+						});
 
 		</script>
 		<% include footer.html %>
