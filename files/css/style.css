@@ -215,6 +215,17 @@
 
 }
 
+.project-side-image {
+    width: 90%;
+    height: 100%;
+    padding: 20px;
+}
+
+.project-side-text {
+    padding: 25px;
+
+}
+
 /* About Me */
 
 

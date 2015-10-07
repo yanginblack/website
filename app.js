@@ -25,6 +25,10 @@ app.get('/games', function(request, response) {
 app.get('/about', function(request, response) {
   response.render("aboutme");
 });
+
+app.get('/snow', function(request, response) {
+  response.render("snow");
+});
 /*
 app.use(function(req, res, next){
   res.status(404);
