@@ -5,42 +5,37 @@
     </head>
 	<body>
 		<% include header.html %>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-2">
+					<div id="side_bar hidden-xs">
+						<a class="btn btn-primary side_buttons" href="#" data-id="0"><span class="hidden-sm hidden-xs">Snow </span>1</a>
+						<a class="btn btn-primary side_buttons" href="#" data-id="1"><span class="hidden-sm hidden-xs">Snow </span>2</a>
+						<a class="btn btn-primary side_buttons" href="#" data-id="2"><span class="hidden-sm hidden-xs">Snow </span>3</a>
+						<a class="btn btn-primary side_buttons" href="#" data-id="3"><span class="hidden-sm hidden-xs">Snow </span>4</a>
+						<a class="btn btn-primary side_buttons" href="#" data-id="4"><span class="hidden-sm hidden-xs">Snow </span>5</a>
+						<a class="btn btn-primary side_buttons" href="#" data-id="5"><span class="hidden-sm hidden-xs">Snow </span>6</a>
+					</div>
+				</div>
+				<div class="col-sm-9 col-sm-offset-1">
+				<!--<div class="container snow_block" id="window">
 
-
+				</div>!-->
+				<div id="screen"></div>
 		
-		<div id="side_bar">
-			<a class="btn btn-primary side_buttons" href="#" data-id="0">Shape 1</a>
-			<a class="btn btn-primary side_buttons" href="#" data-id="1">Shape 2</a>
-			<a class="btn btn-primary side_buttons" href="#" data-id="2">Shape 3</a>
-			<a class="btn btn-primary side_buttons" href="#" data-id="3">Shape 4</a>
-			<a class="btn btn-primary side_buttons" href="#" data-id="4">Shape 5</a>
-			<a class="btn btn-primary side_buttons" href="#" data-id="5">Shape 6</a>
-		</div>
-		<div class="container snow_block" id="window">
+				</div>
 
+			</div>
 		</div>
-		<div id="screen"></div>
+
+	
+
 <style type="text/css">
-	.snow_block {
-		width: 1000px;
-		background-color: white;
-		height: 600px;
-		margin-left: auto;
-		margin-right: auto;
-		position: relative;
-		top: 200px;
-		z-index:0;
-	}
-
 	#screen {
-		width: 800px;
+		width: 100%;
 		border: 2px solid #A4A4A4;
 		height: 500px;
 		border-radius: 15px;
-		position: absolute;
-		top: 100px;
-		left: 240px;
-		overflow: hidden;
 		background-color: black;
 		z-index: 1;
 	}
@@ -54,437 +49,43 @@
 	}
 
 	#side_bar {
-		float: right;
-		right: 300px;
-		width: 150px;
-		top: 200px;
-		z-index: 3;
-		position: absolute;
+		margin-top: 50px;
 	}
 	.side_buttons {
 		display: block;
-		margin: 10px;
+		margin: 20px;
 	}
+	@media screen and (max-width: 768px) {
+    .side_buttons {
+        margin: 5px;
+        display: inline-block;
+    }
+}
 </style>
+<script type="text/javascript" src="files/js/game/snowflake.js"></script>
+<script type="text/javascript">
+    var snowflake = new Follow('screen', {speed: 4,
+    animR : 2.2,
+	fn : function (i, j) {
+	return {
+	x : 0.8*j/4*Math.cos(i*Math.PI/180),
+	y : 0.8*j/4*Math.sin(i*Math.PI/180)
+	}
+	}});
 
+	snowflake.setobj(0);
+	snowflake.setXY();
 
-		<script type="text/javascript">
-
-var flaketype = 1;
-//snowflake which follow mouse
-var Follow = function () {
-
-	var $ = function (i) {return document.getElementById(i)},
-	addEvent = function (o, e, f) {o.addEventListener ? o.addEventListener(e, f, false) : o.attachEvent('on'+e, function(){f.call(o)})},
-	removeEvent = function(o, e, f) {o.removeEventListener ? o.removeEventListener(e, f, false) : o.detachEvent('on'+e, function(){f.call(o)})},
-	//OBJ = [], 
-	sp, rs, N = 0, m, container;
-	var keyboard;
-	var init = function (id, config) {
-		this.config = config || {};
-		this.obj = $(id);
-		this.container = id;
-		sp = this.config.speed || 4;
-		rs = this.config.animR || 1;
-		m = {x: $(id).offsetWidth * .5, y: $(id).offsetHeight * .5};
-		//this.setXY();
-		this.start();
-		}
-	init.prototype = {
-			
-			fn: function(e) {
-			e = e || window.event;
-			m.x = e.clientX-240;
-			m.y = e.clientY-100+document.body.scrollTop+document.documentElement.scrollTop;
-			center_x = m.x+240;
-			center_y = m.y+100;
-			
-		},		
-		setXY : function () {
-		    var _this = this;
-			//addEvent(this.obj, 'mousemove', function (e) {
-			addEvent(this.obj, 'mousemove', this.fn)
-			},
-			
-			deleteXY: function() {
-            removeEvent(this.obj, 'mousemove', this.fn)		    
-           // removeEvent(this.obj, 'mousemove', function(e) {alert("removed");});           
-			},
-			setcenter: function() {
-				m = {
-					x: $(this.container).offsetWidth * .5, 
-					y: $(this.container).offsetHeight * .5
-				};
-
-			},
-			setobj: function(shape) {
-			    //play('turnwhite');
-				OBJ=[];
-				N=0;
-				var k = 180 / Math.PI, OO, o, _this = this, fn = this.config.fn;
-				var obj1 = document.getElementById('screen');
-				while(obj1.firstChild)
-				{
-					obj1.removeChild(obj1.firstChild);
-				}				
-				OBJ[N++] = OO = new CObj(null, 0, 0);
-				if (shape==0)
-					{   //normal snowflake-shape
-          for (var i=30;i<390;i+=60)
-		{
-			var O=OO;
-			for (var j=15;j<27;j++)
-			{
-				var x = fn(i,j).x, y = fn(i,j).y;
-				OBJ[N++] = o = new CObj(O,x,y);
-				O = o;
-				
-				if ((j-10)%8 == 0)
-				{
-					var pre_i = i, pre_j = j, pre_O = O;
-
-					for (var k=0;k<5;k++)
-					{
-						i+=10;
-						j+=0.5;
-						x = fn(i,j).x; 
-						y = fn(i,j).y;
-						OBJ[N++] = o = new CObj(O,x,y);
-						O = o;
-					}
-					i = pre_i;
-					j = pre_j;
-					O = pre_O;
-									for (var k=0;k<5;k++)
-									{
-									i-=10;
-									j+=0.5;
-									x = fn(i,j).x;
-									y = fn(i,j).y;
-									OBJ[N++] = o = new CObj(O,x,y);
-									O = o;
-						
-									}
-								i = pre_i;
-								j = pre_j;
-								O = pre_O;
-								}
-							}
-						}
-
-					}
-					
-						else if (shape==3)
- // beautiful flower green
-       						{
-								for (var i=0;i<360;i+=60)
-								{
-								var O=OO;
-								for (var j=15;j<27;j++)
-									{
-										var x = fn(i,j).x, y = fn(i,j).y;
-										OBJ[N++] = o = new CObj(O,x,y);
-										O = o;
-				
-										if ((j-10)%8 == 0)
-										{
-											var pre_i = i, pre_j = j, pre_O = O;
-
-											for (var k=0;k<8;k++)
-												{
-													i+=10;
-													j+=7;
-													x = fn(i,j).x; 
-													y = fn(i,j).y;
-													OBJ[N++] = o = new CObj(O,x,y);
-													O = o;
-												}
-											i = pre_i;
-											j = pre_j;
-											O = pre_O;
-											for (var k=0;k<8;k++)
-												{
-												i-=10;
-												j+=7;
-												x = fn(i,j).x;
-												y = fn(i,j).y;
-												OBJ[N++] = o = new CObj(O,x,y);
-												O = o;
-						
-												}
-											i = pre_i;
-											j = pre_j;
-											O = pre_O;
-										}
-									}
-								}
+	$('.side_buttons').click(function(e) {
+		e.preventDefault();
+		var shape = $(this).attr('data-id');
+		snowflake.setcenter();
+		snowflake.setobj(shape);
 		
-							}//else if
 
+	});
 
-			else if (shape==1)
-            {
-			//snowflake spin
-       		for(var i=0;i<360;i+=20){
-			var O = OO;
-			var pre_i = i;
-			for(var j=15; j<40; j+=2){
-				var x = fn(i, j).x,
-				y = fn(i, j).y;
-				OBJ[N++] = o = new CObj(O , x, y);
-				O = o;
-				i-=5;
-				}
-				i=pre_i;
-			}
-
-
-          }
-          
-          
-           else if (shape==2)
-               //snowflake six angle
-               {
-                for (var i=30;i<390;i+=60)
-				{
-				var O=OO;
-				for (var j=12;j<27;j++)
-					{
-				var x = fn(i,j).x, y = fn(i,j).y;
-				OBJ[N++] = o = new CObj(O,x,y);
-				O = o;
-				
-				if ((j-10)%8 == 0)
-				{
-					var pre_i = i, pre_j = j, pre_O = O;
-
-					for (var k=0;k<(pre_j/2);k++)
-					{   i+=5;
-						j-=5;
-						x = fn(i,j).x; 
-						y = fn(i,j).y;
-						OBJ[N++] = o = new CObj(O,x,y);
-						O = o;
-					}
-
-					i = pre_i;
-					j = pre_j;
-					O = pre_O;
-										
-					for (var k=0;k<(pre_j/2);k++)
-					{   i-=5;
-						j-=5;
-						x = fn(i,j).x;
-						y = fn(i,j).y;
-						OBJ[N++] = o = new CObj(O,x,y);
-						O = o;
-						
-					}
-					i = pre_i;
-					j = pre_j;
-					O = pre_O;
-				}
-			}
-		}
-	}		
-	
-	
-	
-	
-	else if (shape==4)
-     //snowflake like small flower
-     {
-		for(var i=0;i<360;i+=60){
-			var O = OO;
-			   pre_i = i;
-			   pre_O = O;
-			for(var j=10; j<34; j+=1){
-				
-				var x = fn(i, j).x,
-				y = fn(i, j).y;
-				if (j<22)
-				{i+=5;}
-				else 
-				{i-=5;}
-				OBJ[N++] = o = new CObj(O , x, y);
-				O = o;
-				}
-				O = pre_O;
-				i = pre_i;
-				for(var j=10; j<34; j+=1){
-				if (j<22)
-				{i-=5;}
-				else 
-				{i+=5;}
-				var x = fn(i, j).x,
-				y = fn(i, j).y;
-				OBJ[N++] = o = new CObj(O , x, y);
-				O = o;
-				}
-			}	
-		
-         }
-         // snowflake of spin combine normal
-          else if (shape==5)
-          {
-        for(var i=0;i<360;i+=30){
-			var O = OO;
-			for(var j=15; j<27; j+=1){
-				var x = fn(i, j).x,
-				y = fn(i, j).y;
-				OBJ[N++] = o = new CObj(O , x, y);
-				O = o;
-				if ((j%5)==0)
-				{   pre_i = i;
-					pre_O = O;
-					for (var k=0; k<(j*2/5); k++)
-					{
-						i-=5;
-						x = fn(i, j).x,
-				        y = fn(i, j).y;
-				        OBJ[N++] = o = new CObj(O , x, y);
-				        O = o;
-					}
-					i = pre_i;
-					O = pre_O;
-				}
-				
-				}
-			}
-	     }
-
-      
-      
-
-          		
-					
-			},
-			
-			turnwhite: function() {
-				//play('turnwhite');
-				for (var i = 0; i < N; i++) {if(OBJ[i].parent) OBJ[i].css.background="white";}
-				//flaketype=0;
-				//num=0;
-			},
-
-		start : function () {
-		//var k = 180 / Math.PI, OO, o, _this = this, fn = sethis.config.fn;
-		  //alert("start");    
-		  //     this.setobj(0);
-	   //var element;
-	   //element = document.getElementById('num');
-		setInterval(function() {
-			for (var i = 0; i < N; i++) OBJ[i].run();	
-			}, 10);
-		} //start function
-	
-	} //init.propotype
-	
-	var CObj = function (p, cx, cy) {
-		
-		if (!p)
-		{
-			var obj = document.createElement("span");
-			obj.setAttribute('style','background-color:white;width:10px;border-radius:100%');
-			document.getElementById("screen").appendChild(obj);
-			this.css = obj.style;
-			this.css.position = "absolute";
-			this.css.left = "-1000px";
-			this.ddx = 0;
-        	this.ddy = 0;
-			this.PX = 0;
-			this.PY = 0;
-			this.x = 0;
-			this.y = 0;
-			this.x0 = 0;
-			this.y0 = 0;
-			this.cx = cx;
-			this.cy = cy;
-			this.parent = p;
-			
-		}
-		else
-		{
-		
-		var obj = document.createElement("span");
-		this.css = obj.style;
-		this.css.position = "absolute";
-		this.css.left = "-1000px";
-		//this.css.zIndex = 1000 - N;
-		document.getElementById("screen").appendChild(obj);
-		this.ddx = 0;
-        this.ddy = 0;
-		this.PX = 0;
-		this.PY = 0;
-		this.x = 0;
-		this.y = 0;
-		this.x0 = 0;
-		this.y0 = 0;
-		this.cx = cx;
-		this.cy = cy;
-		this.parent = p;
-       }
-		}
-
-		CObj.prototype.run = function () {
-		if (!this.parent) {
-		this.x0 = m.x;
-		this.y0 = m.y;
-		} else {
-				this.x0 = this.parent.x;
-				this.y0 = this.parent.y;
-				}
-		this.x = this.PX += (this.ddx += ((this.x0 - this.PX - this.ddx) + this.cx) / rs) / sp;
-		this.y = this.PY += (this.ddy += ((this.y0 - this.PY - this.ddy) + this.cy) / rs) / sp;
-		if (!this.parent)
-		{
-		this.css.left = Math.round(this.x)+'px';
-		this.css.top = Math.round(this.y)+'px';
-		}
-		else
-		{
-		this.css.left = Math.round(this.x)+'px';
-		this.css.top = Math.round(this.y)+'px';
-		}
-		}
-	return init;
-}();
-
-
-
-
-
-
-
-
-
-
-
-
-			            var snowflake = new Follow('screen', {speed: 4,
-                        animR : 2.2,
-						fn : function (i, j) {
-						return {
-						x : 0.8*j/4*Math.cos(i*Math.PI/180),
-						y : 0.8*j/4*Math.sin(i*Math.PI/180)
-						}
-						}});
-
-						//snowflake.setXY();
-						snowflake.setobj(0);
-						snowflake.setXY();
-
-						$('.side_buttons').click(function(e) {
-							e.preventDefault();
-							var shape = $(this).attr('data-id');
-							//snowflake.init();
-							snowflake.setcenter();
-							snowflake.setobj(shape);
-							
-
-						});
-
-		</script>
+</script>
 		<% include footer.html %>
 	</body>
 </html>
