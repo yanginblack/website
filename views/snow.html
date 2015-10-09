@@ -15,6 +15,7 @@
 						<a class="btn btn-primary side_buttons" href="#" data-id="3"><span class="hidden-sm hidden-xs">Snow </span>4</a>
 						<a class="btn btn-primary side_buttons" href="#" data-id="4"><span class="hidden-sm hidden-xs">Snow </span>5</a>
 						<a class="btn btn-primary side_buttons" href="#" data-id="5"><span class="hidden-sm hidden-xs">Snow </span>6</a>
+						<a class="btn btn-primary side_buttons side_back" href="/games" data-id="6"><i class="glyphicon glyphicon-menu-left"></i><span class="hidden-sm hidden-xs"> Back</span></a>
 					</div>
 				</div>
 				<div class="col-sm-9 col-sm-offset-1">
@@ -54,7 +55,9 @@
 	.side_buttons {
 		display: block;
 		margin: 20px;
+
 	}
+
 	@media screen and (max-width: 768px) {
     .side_buttons {
         margin: 5px;
@@ -77,12 +80,12 @@
 	snowflake.setXY();
 
 	$('.side_buttons').click(function(e) {
-		e.preventDefault();
-		var shape = $(this).attr('data-id');
-		snowflake.setcenter();
-		snowflake.setobj(shape);
-		
-
+		if ($(this).attr('data-id') < 6) {
+			e.preventDefault();
+			var shape = $(this).attr('data-id');
+			snowflake.setcenter();
+			snowflake.setobj(shape);
+		}
 	});
 
 </script>

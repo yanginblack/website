@@ -18,7 +18,8 @@ app.get('/projects', function(request, response) {
 });
 
 app.get('/games', function(request, response) {
-  response.render("games");
+
+    response.render("games");
 
 });
 
