@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+	<head>
+		<% include head.html %>
+    <script type="text/javascript" src="files/js/socket.io.js"></script>
+    </head>
+	<body ng-app="memoryGameApp">
+		<% include header.html %>
+		<div class="container" ng-controller="GameCtrl">
+		  <div>Pairs left to match: {{game.unmatchedPairs}}</div>
+		  <div>Matching: {{game.firstPick.title}}</div>
+
+		  <table>
+		    <tr ng-repeat="row in game.grid">
+		      <td ng-repeat="tile in row" ng-click="game.flipTile(tile)">
+
+		        <!-- this entire block can be replaced with our custom component mgCard:
+		          <mg-card tile="tile"></mg-card>
+		        -->
+		        <div class="cards-block">
+		          <div class="card" ng-class="{flipped: tile.flipped}">
+		              <img class="front" ng-src="files/img/games/memory/back.png">
+		              <img class="back" ng-src="files/img/games/memory/{{tile.title}}.png">
+		          </div>
+		        </div>
+
+		      </td>
+		    </tr>
+		  </table>
+
+		  <div class="message">{{game.message}}</div>			
+
+		  <div class="container message-block">
+        <div class="message-box">
+          <ul class="list-unstyled" id="message_list">
+            <li ng-repeat="chat in game.chatHistory">{{chat}}</li>
+          </ul>
+        </div>
+        <div class="names">
+          <ul class="list-unstyled" id="name_list">
+            <li ng-repeat = "name in game.names">{{name.name}}</li>
+          </ul>
+        </div>
+        <form class="form-inline" id="message_form">
+          <div class="form-group">
+            <label for="message_input">Message</label>
+            <input type="text" class="form-control" id="message_input" ng-model = "game.sendMessage" placeholder="Your message here: ">
+          </div>
+          <button type="submit" class="btn btn-default">Send</button>
+        </form>
+      </div>
+    </div>
+
+	
+
+<style type="text/css">
+/* app css stylesheet */
+
+.cards-block {
+  width: 165px;
+  height: 200px;
+  position: relative;
+  -webkit-perspective: 800px;
+  -moz-perspective: 800px;
+  -ms-perspective: 800px;
+  -o-perspective: 800px;
+  perspective: 800px;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  -webkit-transition: -webkit-transform 1s;
+  -moz-transition: -moz-transform 1s;
+  -ms-transition: -ms-transform 1s;
+  -o-transition: -o-transform 1s;
+  transition: transform 1s;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.card.flipped {
+  -webkit-transform: rotateY( 180deg );
+  -moz-transform: rotateY( 180deg );
+  -ms-transform: rotateY( 180deg );
+  -o-transform: rotateY( 180deg );
+  transform: rotateY( 180deg );
+}
+
+.card img {
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  -o-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+
+
+.card .back {
+  background: blue;
+  -webkit-transform: rotateY( 180deg );
+  -moz-transform: rotateY( 180deg );
+  -ms-transform: rotateY( 180deg );
+  -o-transform: rotateY( 180deg );
+  transform: rotateY( 180deg );
+}
+
+.message {
+  width: 660px;
+  text-align: center;
+}
+
+.message-block {
+  padding: 20px;
+  margin: 20px;
+  border: 2px black solid;
+  border-radius: 15px;
+}
+
+.message-box {
+  height: 400px;
+  overflow: scroll;
+}
+
+.names {
+  float: right;
+}
+</style>
+<script type="text/javascript" src="files/js/game/memorygame.js"></script>
+<script type="text/javascript">
+/*
+  var socket = io.connect('http://localhost:8080');
+
+  var insertMessage = function(msg) {
+    $('#message_list').append("<li>" + msg + "</li>");
+  }
+
+  var updateName = function(names) {
+    $('#name_list').html('');
+    for (var i=0;i<names.length;i++)
+      $('#name_list').append("<li>" + names[i].name + "</li>");
+  }
+
+  $('#message_form').submit(function(e) {
+    var message = $('#message_input').val();
+    $('#message_input').val('');
+    socket.emit('message', message);
+
+  });
+
+  var name = prompt("Please tell us your name");
+  if (name === "") name = "Guest";
+  socket.emit('join', name);
+  insertMessage("Welcome, " + name);
+
+
+  socket.on('message', function(data) {
+    insertMessage(data);
+  });
+
+  socket.on('names', function(names) {
+      updateName(names);
+      //console.log(names);
+  });
+
+*/
+</script>
+		<% include footer.html %>
+	</body>
+</html>
