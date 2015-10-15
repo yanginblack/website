@@ -11,6 +11,7 @@ var storeMessage = function(name, data) {
     messages.shift();
 };
 io.on('connection', function(client) {
+  //add new client and add name
   client.on('join', function(name) {
     client.nickname = name;
     client.broadcast.emit('message', name + " just enter the room");
@@ -22,14 +23,40 @@ io.on('connection', function(client) {
     client.emit('names', names);
     client.broadcast.emit('names', names);
   });
+  //receive chat message
   client.on('message', function(data) {
     client.broadcast.emit('message', client.nickname + ": " + data);
     client.emit('message', client.nickname + ": " + data);
     storeMessage(client.nickname, data);      
   });
+
+  //send watch info
+  client.on('watch', function(data) {
+    client.broadcast.emit('watch', data);
+    console.log(client.nickname + " watch data sent");
+  });
+
+  //pair multiplayer game
+  client.on('pair', function(data) {
+    client.broadcast.emit('pair', data);
+    console.log(client.nickname + " is pairing");
+  });
+  //set grid the same for one game
+  client.on('grid', function(data) {
+    client.broadcast.emit('grid', data);
+    console.log(client.nickname + " is sending grid");
+  });
+  //send flip info
+  client.on('flip', function(data) {
+    client.broadcast.emit('flip', data);
+    console.log(client.nickname + " just sent a flip");
+  });
+
+
+  //remove client's name after leave
   client.on('disconnect', function() {
     if (typeof client.nickname !== "undefined") {
-      client.broadcast.emit('message', client.nickname + "has left room");
+      client.broadcast.emit('message', client.nickname + " has left room");
       console.log("client " + client.nickname + " has left room"); 
       for (var i=0;i<names.length;i++) {
         if (names[i].name === client.nickname) {

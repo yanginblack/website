@@ -7,8 +7,28 @@
 	<body ng-app="memoryGameApp">
 		<% include header.html %>
 		<div class="container" ng-controller="GameCtrl">
+      <div class="row text-center">
+        <button type="button" class="btn btn-default" ng-click="reset();">Single Player</button>
+        <button type="button" class="btn btn-default" ng-click="multiplayer();">Start Multiplay</button>
+        <button type="button" class="btn btn-default" ng-click="joinGame();">Join Multiplay</button>
+        <button type="button" class="btn btn-default" ng-click="AIplay();">Play with AI</button>
+        <button type="button" class="btn btn-default" ng-click="reset();">Reset Game</button>
+      </div>
+      <div class="row">
+        <h2><span class="label label-primary">{{game.status}}</span></h2>
+        <h3>
+          <span class="label label-success">{{game.name}}: {{game.score}}</span>
+          <span class="label label-success" ng-show="game.opponent.name">{{game.opponent.name}}: {{game.opponent.score}}</span>
+          <span class="label label-default" ng-show="game.hashcode">Please send your HashCode to your friend: {{game.hashcode}}</span>
+        </h3>
+        <h3>
+          <span class="label label-default" ng-show="game.watch.firstPlayer">{{game.watch.firstPlayer}}: {{game.watch.firstScore}}</span>
+          <span class="label label-default" ng-show="game.watch.secondPlayer">{{game.watch.secondPlayer}}: {{game.watch.secondScore}}</span>
+        </h3>
+      </div>
 		  <div>Pairs left to match: {{game.unmatchedPairs}}</div>
 		  <div>Matching: {{game.firstPick.title}}</div>
+      <div class="message">{{game.message}}</div> 
 
 		  <table>
 		    <tr ng-repeat="row in game.grid">
@@ -26,9 +46,7 @@
 
 		      </td>
 		    </tr>
-		  </table>
-
-		  <div class="message">{{game.message}}</div>			
+		  </table>		
 
 		  <div class="container message-block">
         <div class="message-box">
