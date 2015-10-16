@@ -4,17 +4,9 @@
 
 var memoryGameApp = angular.module('memoryGameApp', []);
 
-/*
-memoryGameApp.factory('game', function() {
-  var tileNames = ['8-ball', 'kronos', 'baked-potato', 'dinosaur', 'rocket', 'skinny-unicorn',
-    'that-guy', 'zeppelin'];
-
-  return new Game(tileNames);
-});
-*/
 
 memoryGameApp.factory('socket', function ($rootScope) {
-  var socket = io.connect('http://localhost:8080');
+  var socket = io.connect();
   return {
     on: function (eventName, callback) {
       socket.on(eventName, function () {  
@@ -57,29 +49,33 @@ var tileNames = ['8-ball', 'kronos', 'baked-potato', 'dinosaur', 'rocket', 'skin
     $scope.game.names = names;
     
   };
+  
   //chat socket
   var getName = function(name) {
-
     if (name === "") {
         name = prompt("Please tell us your name");
-        if (name === "") name = "Guest";
+        if (typeof name == "undefined" || name === "") name = "Guest";
         socket.emit('join', name);
     }    
     $scope.game.chatHistory.push("Welcome, " + name);
     $scope.game.name = name;    
   };
+$(document).ready(function() {
+  getName('');  
+});
 
-  getName('');
 
 
 //start multiplayer mode, lock and show hashcode
   $scope.multiplayer = function() {
     $scope.reset();
     $scope.game.hashcode = makeid();
-    $scope.game.status = "Waiting your friend to join";
+    $scope.game.status = "Two Players";
+    $scope.game.message = "Please send the hashcode to your friend who wants to join or watch";
     $scope.game.lock = true;
     $scope.game.firstStart = true;
   };
+
 //join other people's game
   $scope.joinGame = function() {
     var hashcode = prompt("Please input your friend's invite code");
@@ -87,13 +83,14 @@ var tileNames = ['8-ball', 'kronos', 'baked-potato', 'dinosaur', 'rocket', 'skin
     $scope.reset();
     $scope.game.hashcode = hashcode;
     $scope.game.lock = true;
-    $scope.game.status = "Your friend's turn";
+    $scope.game.status = "Two Players";
+    $scope.game.message = "Your friend's turn";
     socket.emit('pair', {hashcode: $scope.game.hashcode, name: $scope.game.name});
   };
   $scope.AIplay = function() {
     $scope.reset();
     $scope.game.AIplay();
-  }
+  };
 
   $('#message_form').submit(function(e) {
     socket.emit('message', $scope.game.sendMessage);
@@ -129,7 +126,7 @@ var tileNames = ['8-ball', 'kronos', 'baked-potato', 'dinosaur', 'rocket', 'skin
             secondScore: $scope.game.opponent.score
           }
         };
-        socket.emit('watch', watchData);
+        socket.emit('watchgame', watchData);
       }
     }
     else {
@@ -138,7 +135,6 @@ var tileNames = ['8-ball', 'kronos', 'baked-potato', 'dinosaur', 'rocket', 'skin
       $scope.game.opponent.score = 0;
       $scope.game.playmode = 2; //mode 2 multiplayer
       
-      console.log($scope.game.opponent);
       if ($scope.game.firstStart) {
         $scope.game.lock = false;
         var gridPair = {hashcode: $scope.game.hashcode, 
@@ -146,7 +142,7 @@ var tileNames = ['8-ball', 'kronos', 'baked-potato', 'dinosaur', 'rocket', 'skin
           checkname: $scope.game.opponent.name};
         socket.emit('pair', {hashcode: $scope.game.hashcode, name: $scope.game.name});
         socket.emit('grid', gridPair);
-        $scope.game.status = "Your turn";
+        $scope.game.message = "Your turn";
       }
 
     }
@@ -160,29 +156,27 @@ var tileNames = ['8-ball', 'kronos', 'baked-potato', 'dinosaur', 'rocket', 'skin
   });
   //socket of receiving flip tile
   socket.on('flip', function(data) {
-    console.log(data);
     if (data.hashcode !== $scope.game.hashcode) return;
     if ($scope.game.playmode === 2 && data.name === $scope.game.opponent.name) {
       $scope.game.opponent.score = data.score;
       $scope.game.opponentFlip(data.flipID);  
       if (data.lock) {
         $scope.game.lock = false;
-        $scope.game.status = "Your Turn";
+        $scope.game.message = "Your Turn";
       }      
     } else if ($scope.game.playmode === 3) { //watching mode
       $scope.game.opponentFlip(data.flipID);
       if ($scope.game.watch.firstPlayer === data.name) $scope.game.watch.firstScore = data.score;
       else $scope.game.watch.secondScore = data.score;
       if ($scope.game.watch.secondScore + $scope.game.watch.firstScore >= $scope.game.unmatchedPairs) {
-        $scope.game.status = ($scope.game.watch.firstScore>$scope.game.watch.secondScore)?$scope.game.watch.firstPlayer:$scope.game.watch.secondPlayer;
-        $scope.game.status += " win!";
+        $scope.game.message = ($scope.game.watch.firstScore>$scope.game.watch.secondScore)?$scope.game.watch.firstPlayer:$scope.game.watch.secondPlayer;
+        $scope.game.message += " win!";
       }
     }
 
   });
 
-
-  socket.on('watch', function(data) {
+  socket.on('watchgame', function(data) {
     //other group's pair:
     if (data.hashcode !== $scope.game.hashcode) return;
     //watch game
@@ -190,7 +184,8 @@ var tileNames = ['8-ball', 'kronos', 'baked-potato', 'dinosaur', 'rocket', 'skin
       $scope.game.playmode = 3; //watch mode
       $scope.game.grid = data.grid;
       $scope.game.watch = data.watch;
-      $scope.game.status = "Watching Game";      
+      $scope.game.status = "Watching Game";  
+      $scope.game.message = "Please enjoy watching the game";    
     }
 
   });
@@ -216,12 +211,12 @@ var tileNames = ['8-ball', 'kronos', 'baked-potato', 'dinosaur', 'rocket', 'skin
     this.sendMessage = "";
     this.names = [];
     this.name = "";
-    this.status = "single mode";
+    this.status = "Single Mode";
     this.score = 0;
     this.opponent = {name:"", score: ""};
     this.chatHistory = [];
     this.grid = makeGrid(tileDeck);
-    this.message = Game.MESSAGE_CLICK;
+    this.message = "";
     this.unmatchedPairs = tileNames.length;
     this.fliping = false;
     this.hashcode = "";
@@ -250,7 +245,6 @@ var tileNames = ['8-ball', 'kronos', 'baked-potato', 'dinosaur', 'rocket', 'skin
         }
 
         this.firstPick = tile;
-        this.message = Game.MESSAGE_ONE_MORE;
         if (this.playmode === 2)
           this.multiFlip(tile, false);
         this.fliping = false;
@@ -258,20 +252,20 @@ var tileNames = ['8-ball', 'kronos', 'baked-potato', 'dinosaur', 'rocket', 'skin
       } else {
 
         if (this.firstPick.title === tile.title) {
-          this.unmatchedPairs--;
-          this.message = (this.unmatchedPairs > 0) ? Game.MESSAGE_MATCH : Game.MESSAGE_WON;
           this.firstPick = this.secondPick = undefined;
           this.fliping = false;
           this.score += 1;
-          if (this.unmatchedPairs === 0) {
+          if (this.score + this.opponent.score === this.unmatchedPairs) {
             this.lock = true;
-            this.status = "You win";
+            if (this.score > this.opponent.score)
+              this.message = "Congratulations, You win this Game!";
+            else 
+              this.message = "Sorry, you lose this game. Start a new one!";
           }
           if (this.playmode === 2)
             {this.multiFlip(tile, false);}
         } else {
           this.secondPick = tile;
-          this.message = Game.MESSAGE_MISS;
           //flip the card in opponent's grid
           if (this.playmode === 2)
           this.multiFlip(tile, false);                              
@@ -293,7 +287,7 @@ var tileNames = ['8-ball', 'kronos', 'baked-potato', 'dinosaur', 'rocket', 'skin
       this.fliping = false;
       if (this.playmode === 4) {
         this.lock = true;
-        this.status = "AI's turn";
+        this.message = "AI's turn";
         $timeout(function() {$scope.game.startAI();}, 2000);
       }
     },
@@ -301,7 +295,7 @@ var tileNames = ['8-ball', 'kronos', 'baked-potato', 'dinosaur', 'rocket', 'skin
     this.multiFlip = function(tile, lock_flag) {
       if (lock_flag) {
         this.lock = true;
-        this.status = "Your friend's turn";
+        this.message = "Your friend's turn";
       }
       var sendData = {
         hashcode: $scope.game.hashcode, 
@@ -327,7 +321,8 @@ var tileNames = ['8-ball', 'kronos', 'baked-potato', 'dinosaur', 'rocket', 'skin
       this.playmode = 4;
       this.opponent.name = "AI";
       this.opponent.score = 0;
-      this.status = "Your Turn";
+      this.status = "AI Game";
+      this.message = "Only who looks deep can win AI, please start first";
 
     }, 
     this.startAI = function() {
@@ -351,19 +346,11 @@ var tileNames = ['8-ball', 'kronos', 'baked-potato', 'dinosaur', 'rocket', 'skin
           }
         }
       }
-      if (this.score > this.opponent.score) this.status = "You Win!";
-      else this.status = "You Lose!";
+      if (this.score > this.opponent.score) this.message = "Congratulations, You Win!";
+      else this.message = "Sorry, You Lose!";
     };
 
-  }
-
-  Game.MESSAGE_CLICK = 'Click on a tile.';
-  Game.MESSAGE_ONE_MORE = 'Pick one more card.'
-  Game.MESSAGE_MISS = 'Try again.';
-  Game.MESSAGE_MATCH = 'Good job! Keep going.';
-  Game.MESSAGE_WON = 'You win!';
-
-
+  };
 
   /* Create an array with two of each tileName in it */
   function makeDeck(tileNames) {
@@ -398,8 +385,7 @@ var tileNames = ['8-ball', 'kronos', 'baked-potato', 'dinosaur', 'rocket', 'skin
     return tileDeck.splice(i, 1)[0];
   }
 
-  function makeid()
-{
+  function makeid() {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -407,40 +393,10 @@ var tileNames = ['8-ball', 'kronos', 'baked-potato', 'dinosaur', 'rocket', 'skin
         text += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return text;
-}
-
-
-});
-
-
-//usages:
-//- in the repeater as: <mg-card tile="tile"></mg-card>
-//- card currently being matched as: <mg-card tile="game.firstPick"></mg-card>
-/*
-memoryGameApp.directive('mgCard', function() {
-  return {
-    restrict: 'E',
-    // instead of inlining the template string here, one could use templateUrl: 'mg-card.html'
-    // and then either create a mg-card.html file with the content or add
-    // <script type="text/ng-template" id="mg-card.html">.. template here.. </script> element to
-    // index.html
-    template: '<div class="container">' +
-                '<div class="card" ng-class="{flipped: tile.flipped}">' +
-                  '<img class="front" ng-src="files/img/games/memory/back.png">' +
-                  '<img class="back" ng-src="files/img/games/memory/{{tile.title}}.png">' +
-                '</div>' +
-              '</div>',
-    scope: {
-      tile: '='
-    }
   }
+
+
 });
-*/
-
-
-
-/* Memory Game Models and Business Logic */
-
 
 
 

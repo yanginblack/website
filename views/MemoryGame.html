@@ -7,65 +7,92 @@
 	<body ng-app="memoryGameApp">
 		<% include header.html %>
 		<div class="container" ng-controller="GameCtrl">
-      <div class="row text-center">
-        <button type="button" class="btn btn-default" ng-click="reset();">Single Player</button>
-        <button type="button" class="btn btn-default" ng-click="multiplayer();">Start Multiplay</button>
-        <button type="button" class="btn btn-default" ng-click="joinGame();">Join Multiplay</button>
-        <button type="button" class="btn btn-default" ng-click="AIplay();">Play with AI</button>
-        <button type="button" class="btn btn-default" ng-click="reset();">Reset Game</button>
-      </div>
       <div class="row">
-        <h2><span class="label label-primary">{{game.status}}</span></h2>
-        <h3>
-          <span class="label label-success">{{game.name}}: {{game.score}}</span>
-          <span class="label label-success" ng-show="game.opponent.name">{{game.opponent.name}}: {{game.opponent.score}}</span>
-          <span class="label label-default" ng-show="game.hashcode">Please send your HashCode to your friend: {{game.hashcode}}</span>
-        </h3>
-        <h3>
-          <span class="label label-default" ng-show="game.watch.firstPlayer">{{game.watch.firstPlayer}}: {{game.watch.firstScore}}</span>
-          <span class="label label-default" ng-show="game.watch.secondPlayer">{{game.watch.secondPlayer}}: {{game.watch.secondScore}}</span>
-        </h3>
-      </div>
-		  <div>Pairs left to match: {{game.unmatchedPairs}}</div>
-		  <div>Matching: {{game.firstPick.title}}</div>
-      <div class="message">{{game.message}}</div> 
-
-		  <table>
-		    <tr ng-repeat="row in game.grid">
-		      <td ng-repeat="tile in row" ng-click="game.flipTile(tile)">
-
-		        <!-- this entire block can be replaced with our custom component mgCard:
-		          <mg-card tile="tile"></mg-card>
-		        -->
-		        <div class="cards-block">
-		          <div class="card" ng-class="{flipped: tile.flipped}">
-		              <img class="front" ng-src="files/img/games/memory/back.png">
-		              <img class="back" ng-src="files/img/games/memory/{{tile.title}}.png">
-		          </div>
-		        </div>
-
-		      </td>
-		    </tr>
-		  </table>		
-
-		  <div class="container message-block">
-        <div class="message-box">
-          <ul class="list-unstyled" id="message_list">
-            <li ng-repeat="chat in game.chatHistory">{{chat}}</li>
-          </ul>
-        </div>
-        <div class="names">
-          <ul class="list-unstyled" id="name_list">
-            <li ng-repeat = "name in game.names">{{name.name}}</li>
-          </ul>
-        </div>
-        <form class="form-inline" id="message_form">
-          <div class="form-group">
-            <label for="message_input">Message</label>
-            <input type="text" class="form-control" id="message_input" ng-model = "game.sendMessage" placeholder="Your message here: ">
+        <div class="col-md-8">
+          <div class="row game-buttons">
+            <span class="label label-primary game-status">{{game.status}}</span>
+            <button type="button" class="btn btn-default" ng-click="reset();">One Player</button>
+            <button type="button" class="btn btn-default" ng-click="multiplayer();">Two Player</button>
+            <button type="button" class="btn btn-default" ng-click="joinGame();">Join Game</button>
+            <button type="button" class="btn btn-default" ng-click="AIplay();">Play with AI</button>
+            <button type="button" class="btn btn-default" ng-click="reset();">Reset</button>
           </div>
-          <button type="submit" class="btn btn-default">Send</button>
-        </form>
+
+
+
+          <div class="row game-buttons">
+            <div class="col-sm-6">
+              <ul class="list-group">
+                <li class="list-group-item active">
+                  <span class="badge">{{game.score}}</span>
+                  {{game.name}}
+                </li>
+                <li class="list-group-item" ng-show="game.opponent.name">
+                  <span class="badge">{{game.opponent.score}}</span>
+                  {{game.opponent.name}}
+                </li>
+                <li class="list-group-item" ng-show="game.watch.firstPlayer">
+                  <span class="badge">{{game.watch.firstScore}}</span>
+                  {{game.watch.firstPlayer}}
+                </li>
+                <li class="list-group-item" ng-show="game.watch.secondPlayer">
+                  <span class="badge">{{game.watch.secondScore}}</span>
+                  {{game.watch.secondPlayer}}
+                </li>
+              </ul>              
+            </div>
+            <div class="col-sm-6">
+              <h3>
+                <span class="label label-default" ng-show="game.hashcode">HashCode: {{game.hashcode}}</span>
+              </h3>
+            </div>
+          </div>
+
+          <div class="alert alert-info game-buttons" role="alert" ng-show="game.message">{{game.message}}</div> 
+
+          <table>
+            <tr ng-repeat="row in game.grid">
+              <td ng-repeat="tile in row" ng-click="game.flipTile(tile)">
+
+                <!-- this entire block can be replaced with our custom component mgCard:
+                  <mg-card tile="tile"></mg-card>
+                -->
+                <div class="cards-block">
+                  <div class="card" ng-class="{flipped: tile.flipped}">
+                      <img class="front" ng-src="files/img/games/memory/back.png">
+                      <img class="back" ng-src="files/img/games/memory/{{tile.title}}.png">
+                  </div>
+                </div>
+
+              </td>
+            </tr>
+          </table>  
+
+
+        </div>
+        <div class="col-md-4">
+          <div class="row">
+            <div class="names">
+              <p class="text-center chatroom-names-title">People on this page</p>
+              <ul class="list-unstyled" id="name_list">
+                <li ng-repeat = "name in game.names">{{name.name}}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="row message-block">
+            <div class="message-box">
+              <ul class="list-unstyled" id="message_list">
+                <li ng-repeat="chat in game.chatHistory">{{chat}}</li>
+              </ul>
+            </div>
+            <form class="form" id="message_form">
+              <div class="form-group">
+                <input type="text" class="form-control" id="message_input" ng-model = "game.sendMessage" placeholder="Your message here: ">
+              </div>
+              <button type="submit" class="btn btn-default form-submit">OK</button>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -131,66 +158,68 @@
   transform: rotateY( 180deg );
 }
 
-.message {
-  width: 660px;
-  text-align: center;
-}
-
 .message-block {
   padding: 20px;
   margin: 20px;
-  border: 2px black solid;
+  border: 2px #3399ff solid;
   border-radius: 15px;
+
 }
 
 .message-box {
-  height: 400px;
+  height: 100%;
   overflow: scroll;
+  height: 600px;
+  border-bottom: 1px #A0A0A0 solid;
+  margin-bottom: 20px;
+}
+
+.chatroom-names-title {
+  margin-bottom: 20px;
+  border-bottom: 1px #A0A0A0 solid;
+}
+
+#message_list li {
+  background-color: rgba(255, 255, 255, 0.6);
+  border: 1px solid #f0f0f0;
+  border-radius: 5px;
+  color: #a4a4a4;
+  font-family: tahoma;
+  font-size: 13px;
+  font-weight: lighter;
+  line-height: 30px;
+  margin-top: 10px;
+  padding: 5px;
 }
 
 .names {
+  border: 2px #3399ff solid;
+  border-radius: 15px;
+  overflow: : scroll;
+  max-height: 200px;
+  padding: 20px;
+  margin: 20px;
+}
+
+.game-status {
+  font-size: 1.5em;
+}
+
+.game-buttons {
+  margin-top: 30px;
+
+}
+
+.game-buttons h3 {
+  margin-top: -10px;
+}
+.form-submit {
   float: right;
 }
+
 </style>
 <script type="text/javascript" src="files/js/game/memorygame.js"></script>
-<script type="text/javascript">
-/*
-  var socket = io.connect('http://localhost:8080');
 
-  var insertMessage = function(msg) {
-    $('#message_list').append("<li>" + msg + "</li>");
-  }
-
-  var updateName = function(names) {
-    $('#name_list').html('');
-    for (var i=0;i<names.length;i++)
-      $('#name_list').append("<li>" + names[i].name + "</li>");
-  }
-
-  $('#message_form').submit(function(e) {
-    var message = $('#message_input').val();
-    $('#message_input').val('');
-    socket.emit('message', message);
-
-  });
-
-  var name = prompt("Please tell us your name");
-  if (name === "") name = "Guest";
-  socket.emit('join', name);
-  insertMessage("Welcome, " + name);
-
-
-  socket.on('message', function(data) {
-    insertMessage(data);
-  });
-
-  socket.on('names', function(names) {
-      updateName(names);
-      //console.log(names);
-  });
-
-*/
-</script>
 		<% include footer.html %>
 	</body>
 </html>

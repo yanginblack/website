@@ -31,8 +31,8 @@ io.on('connection', function(client) {
   });
 
   //send watch info
-  client.on('watch', function(data) {
-    client.broadcast.emit('watch', data);
+  client.on('watchgame', function(data) {
+    client.broadcast.emit('watchgame', data);
     console.log(client.nickname + " watch data sent");
   });
 
