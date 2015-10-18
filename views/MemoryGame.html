@@ -7,10 +7,11 @@
 	<body ng-app="memoryGameApp">
 		<% include header.html %>
 		<div class="container" ng-controller="GameCtrl">
+      <div class="row text-center"><h1>Memory Game</h1></div>
       <div class="row">
         <div class="col-md-8">
           <div class="row game-buttons">
-            <span class="label label-primary game-status">{{game.status}}</span>
+            <span class="label label-info game-status">{{game.status}}</span>
             <button type="button" class="btn btn-default" ng-click="reset();">One Player</button>
             <button type="button" class="btn btn-default" ng-click="multiplayer();">Two Player</button>
             <button type="button" class="btn btn-default" ng-click="joinGame();">Join Game</button>
@@ -102,6 +103,7 @@
 /* app css stylesheet */
 
 .cards-block {
+  margin: 5px;
   width: 165px;
   height: 200px;
   position: relative;
@@ -140,6 +142,7 @@
   height: 100%;
   width: 100%;
   position: absolute;
+  border-radius: 15px;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
   -ms-backface-visibility: hidden;

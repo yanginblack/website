@@ -33,8 +33,10 @@ memoryGameApp.factory('socket', function ($rootScope) {
 
 
 memoryGameApp.controller('GameCtrl', function GameCtrl($scope, $timeout, socket) {
-var tileNames = ['8-ball', 'kronos', 'baked-potato', 'dinosaur', 'rocket', 'skinny-unicorn',
-    'that-guy', 'zeppelin'];
+//var tileNames = ['boat-china', 'castle', 'effiel-tower', 'golden-bridge', 'great-cayon', 'jiuzaigou',
+//    'liberty-statue', 'metro-station'];
+var tileNames = ['boat-china', 'castle', 'effiel-tower', 'golden-bridge', 'great-cayon', 'jiuzaigou',
+    'liberty-statue', 'metro-station', 'puerto-rico', 'san-michelle', 'seaside', 'zhangjiajie'];
 
   $scope.game = new Game(tileNames);
 
@@ -216,7 +218,7 @@ $(document).ready(function() {
     this.opponent = {name:"", score: ""};
     this.chatHistory = [];
     this.grid = makeGrid(tileDeck);
-    this.message = "";
+    this.message = "Game Start! Find cards with the same number";
     this.unmatchedPairs = tileNames.length;
     this.fliping = false;
     this.hashcode = "";
@@ -245,6 +247,7 @@ $(document).ready(function() {
         }
 
         this.firstPick = tile;
+        this.message = "Pick another one";
         if (this.playmode === 2)
           this.multiFlip(tile, false);
         this.fliping = false;
@@ -255,6 +258,7 @@ $(document).ready(function() {
           this.firstPick = this.secondPick = undefined;
           this.fliping = false;
           this.score += 1;
+          this.message = "Success, please continue";
           if (this.score + this.opponent.score === this.unmatchedPairs) {
             this.lock = true;
             if (this.score > this.opponent.score)
@@ -266,6 +270,7 @@ $(document).ready(function() {
             {this.multiFlip(tile, false);}
         } else {
           this.secondPick = tile;
+          this.message = "Fail to pair, please try again";
           //flip the card in opponent's grid
           if (this.playmode === 2)
           this.multiFlip(tile, false);                              
@@ -365,12 +370,13 @@ $(document).ready(function() {
 
 
   function makeGrid(tileDeck) {
-    var gridDimension = Math.sqrt(tileDeck.length),
+    var gridROW = Math.floor(tileDeck.length/4),
+        gridCOL = 4,
         grid = [];
     var count = 1;
-    for (var row = 0; row < gridDimension; row++) {
+    for (var row = 0; row < gridROW; row++) {
       grid[row] = [];
-      for (var col = 0; col < gridDimension; col++) {
+      for (var col = 0; col < gridCOL; col++) {
           grid[row][col] = removeRandomTile(tileDeck);
           grid[row][col].tileID = count++;
       }
