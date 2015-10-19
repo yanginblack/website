@@ -55,7 +55,7 @@ var tileNames = ['boat-china', 'castle', 'effiel-tower', 'golden-bridge', 'great
   //chat socket
   var getName = function(name) {
     if (name === "") {
-        name = prompt("Please tell us your name");
+        name = prompt("Please input a nickname to start game");
         if (typeof name == "undefined" || name === "") name = "Guest";
         socket.emit('join', name);
     }    
@@ -81,7 +81,7 @@ $(document).ready(function() {
 //join other people's game
   $scope.joinGame = function() {
     var hashcode = prompt("Please input your friend's invite code");
-    if (hashcode === "") {alert("empty");return;}
+    if (typeof hashcode === "undefined" || hashcode === "") {return;}
     $scope.reset();
     $scope.game.hashcode = hashcode;
     $scope.game.lock = true;

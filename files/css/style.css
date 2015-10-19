@@ -91,6 +91,11 @@
 }
 
 
+.homepage-title {
+    color: black;
+    font-weight: bold;
+}
+
 .footer {
     background-color: #fff;
 }
