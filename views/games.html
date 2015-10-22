@@ -3,49 +3,32 @@
 	<head>
 		<% include head.html %>
     </head>
-	<body>
+	<body ng-app="projectApp">
 		<% include header.html %>
 
-		<div class="container project-container">
+		<div class="container project-container" ng-controller="ProjectListCtrl">
 			<div class="row">
 				<div class = "col-md-12 text-center"><h2>Game List</h2></div>
 			</div>
 			
 			<div class="row projects">
-				<div class="col-sm-4">
+				<div class="col-sm-4" ng-repeat = "game in games">
 					
-						<a class="portfolio-box" href="/snow">
-							<img class="img-responsive" alt="" src="files/img/games/snow.png">
+						<a class="portfolio-box" href="{{game.url}}">
+							<img class="img-responsive" alt="" src="{{game.img}}">
 							<div class="portfolio-box-caption">
 								<div class="portfolio-box-caption-content">
-									<div class="project-category text-faded"> Snow Flake Game </div>
-									<div class="project-name"> Javascript jQuery HTML5 CSS3 </div>
+									<div class="project-category text-faded"> {{game.category}} </div>
+									<div class="project-name"> {{game.name}} </div>
 								</div>
 							</div>
 						</a>
 						<div class="hidden-sm">
-							<h3>Snow Flake Game</h3>
-							<p>A small javascript game, players can create six different type of snowflake which will follow the movement of mouse, in the mean while there is a delay added to the edge of each snowflake, which is a beautiful relaxing scense. 
+							<h3>{{game.title}}</h3>
+							<p>{{game.description}} 
 							</p>
 						</div>
 					
-				</div>
-				<div class="col-sm-4">
-					
-						<a class="portfolio-box" href="/MemoryGame">
-							<img class="img-responsive" alt="" src="files/img/games/memory.png">
-							<div class="portfolio-box-caption">
-								<div class="portfolio-box-caption-content">
-									<div class="project-category text-faded"> Memory Game </div>
-									<div class="project-name"> Javascript AngularJS Socket.io </div>
-								</div>
-							</div>
-						</a>
-						<div class="hidden-sm">
-							<h3>Memory Game</h3>
-							<p>An AngularJS game, player should memorize the cards' position by keep mathcing them with pairs. And this game allow player to practice by himself, play with friend online or play with AI. Also it includes a chat room. 
-							</p>
-						</div>					
 				</div>
 				<div class="col-sm-4"><!--
 					

@@ -16,7 +16,7 @@ var projectApp = angular.module('projectApp', []);
 projectApp.controller('ProjectListCtrl', function($scope) {
   $scope.projects = [
     {'url': '#',
-     'img': 'files/img/project/tomatoink.png',
+     'img': 'files/img/project/tomatoink.jpg',
      'category': 'CompAndSave Inc', 
      'name': '2015', 
      'title': 'Tomatoink.com (e-commerce website)',
@@ -73,7 +73,7 @@ projectApp.controller('ProjectListCtrl', function($scope) {
       ]
     },
     {'url': '#',
-     'img': 'files/img/project/customer_behavior.png',
+     'img': 'files/img/project/customer_behavior.jpg',
      'category': 'CompAndSave Inc', 
      'name': '2014', 
      'title': 'Customer behavior tracking',
@@ -94,7 +94,7 @@ projectApp.controller('ProjectListCtrl', function($scope) {
       ]   
     }, 
     {'url': '#',
-     'img': 'files/img/project/product_report.png',
+     'img': 'files/img/project/product_report.jpg',
      'category': 'CompAndSave Inc', 
      'name': '2015', 
      'title': 'Product Report System',
@@ -127,7 +127,7 @@ projectApp.controller('ProjectListCtrl', function($scope) {
       ]    
     },
     {'url': '#',
-     'img': 'files/img/project/ispace.png',
+     'img': 'files/img/project/ispace.jpg',
      'category': 'North Carolina State University', 
      'name': '2013', 
      'title': 'Develop Graphic User Interface of iSpace',
@@ -142,7 +142,7 @@ projectApp.controller('ProjectListCtrl', function($scope) {
       ] 
     },    
     {'url': '#',
-     'img': 'files/img/project/email_campaign.png',
+     'img': 'files/img/project/email_campaign.jpg',
      'category': 'CompAndSave Inc', 
      'name': '2014', 
      'title': 'Email Campaign Management',
@@ -182,6 +182,25 @@ projectApp.controller('ProjectListCtrl', function($scope) {
         'name': 'JAVA'
       }
       ]
+    }
+  ];
+
+  $scope.games = [
+    {
+      'url' : '/snow', 
+      'category': '2014', 
+      'title': 'Snow Flake Game', 
+      'name': 'Javascript jQuery HTML5 CSS3',  
+      'img' : 'files/img/games/snow.png', 
+      'description' : 'A small javascript game, players can create six different type of snowflake which will follow the movement of mouse, in the mean while there is a delay added to the edge of each snowflake, which is a beautiful relaxing scense.'
+    }, 
+    {
+      'url' : '/MemoryGame', 
+      'category': '2015', 
+      'title': 'Memory Game', 
+      'name': 'Javascript AngularJS Socket.io', 
+      'img' : 'files/img/games/memory.png', 
+      'description' : 'An AngularJS game, player should memorize the cards position by keep mathcing them with pairs. And this game allow player to practice by himself, play with friend online or play with AI. Also it includes a chat room. ' 
     }
   ];
 });

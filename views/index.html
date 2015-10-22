@@ -3,7 +3,7 @@
 	<head>
 		<% include head.html %>
     </head>
-	<body>
+	<body ng-app="projectApp">
 		<% include header.html %>
 		<div class="container carousel-container">
 			<!-- Carousel
@@ -57,41 +57,40 @@
 
 
 		</div>
-		<div class="container project-container">
+		<div class="container project-container" ng-controller="ProjectListCtrl">
 			<div class="row">
 				<div class = "col-md-12 text-center"><h2><a href='/projects'>Project List</a></h2></div>
 			</div>
 			
 			<div class="row projects">
 				<div class="col-sm-4 text-center">
-					<a class="portfolio-box" href="#">
-						<img class="img-responsive" alt="" src="files/img/project/tomatoink.jpg">
+					<a class="portfolio-box" href="{{projects[0].url}}">
+						<img class="img-responsive" alt="" src="{{projects[0].img}}">
 						<div class="portfolio-box-caption">
 							<div class="portfolio-box-caption-content">
-								<div class="project-category text-faded">CompAndSave Inc</div>
-								<div class="project-name"> 2015 </div>
+								<div class="project-category text-faded">{{projects[0].category}}</div>
+								<div class="project-name"> {{projects[0].name}} </div>
 							</div>
 						</div>
 					</a>
 				</div>
 				<div class="col-sm-8 hidden-xs">
-					<h3>tomatoink.com (e-commerce website)</h3>
-					<p>Built an e-commerce website under Magento Platform. Created a new theme (Customize all of the website pages) and developed several extensions (Backend Optimization for business flow and order operation, customer service). Worked as team leader with a designer and a database engineer, responsible for both front-end and backend implementation. (https://www.tomatoink.com)
-					</p>
+					<h3>{{projects[0].title}}</h3>
+					<p>{{projects[0].description}}</p>
 				</div>
 			</div>
 			<div class="row projects">
 				<div class="col-sm-8 hidden-xs">
-					<h3>Auto-Ship System</h3>
-					<p>Developed a web application for our staffs to automatically ship orders. It can extract all the satisfied orders, organize and classify them, then purchase ship labels and package lists, update order status and tracking number to our database,  and email customer for shipment — including fraud customer and duplicate order checking</p>
+					<h3>{{projects[1].title}}</h3>
+					<p>{{projects[1].description}}</p>
 				</div>
 				<div class="col-sm-4 text-center">
-					<a class="portfolio-box" href="#">
-						<img class="img-responsive" alt="" src="files/img/project/autoship.png">
+					<a class="portfolio-box" href="{{projects[1].url}}">
+						<img class="img-responsive" alt="" src="{{projects[1].img}}">
 						<div class="portfolio-box-caption">
 							<div class="portfolio-box-caption-content">
-								<div class="project-category text-faded"> Compandsave Inc </div>
-								<div class="project-name"> 2014 </div>
+								<div class="project-category text-faded"> {{projects[1].category}} </div>
+								<div class="project-name"> {{projects[1].name}} </div>
 							</div>
 						</div>
 					</a>
@@ -99,19 +98,19 @@
 			</div>
 			<div class="row projects">
 				<div class="col-sm-4 text-center">
-					<a class="portfolio-box" href="#">
-						<img class="img-responsive" alt="" src="files/img/project/ispace.jpg">
+					<a class="portfolio-box" href="{{projects[2].url}}">
+						<img class="img-responsive" alt="" src="{{projects[2].img}}">
 						<div class="portfolio-box-caption">
 							<div class="portfolio-box-caption-content">
-								<div class="project-category text-faded"> North Carolina State University </div>
-								<div class="project-name"> 2013 </div>
+								<div class="project-category text-faded"> {{projects[2].category}} </div>
+								<div class="project-name"> {{projects[2].name}} </div>
 							</div>
 						</div>
 					</a>
 				</div>
 				<div class="col-sm-8 hidden-xs">
-					<h3>User Interface of iSpace</h3>
-					<p>Made an User Interface for iSpace which is an indoor Robot Control Platform for testing algorithms of control and energy saving. Using Java Swing for the interface building, and create a copy under ROS (Robot Operating System).</p>
+					<h3>{{projects[2].title}}</h3>
+					<p>{{projects[2].description}}</p>
 				</div>
 			</div>
 		</div>

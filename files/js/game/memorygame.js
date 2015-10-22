@@ -370,8 +370,8 @@ $(document).ready(function() {
 
 
   function makeGrid(tileDeck) {
-    var gridROW = Math.floor(tileDeck.length/4),
-        gridCOL = 4,
+    var gridROW = Math.floor(tileDeck.length/8),
+        gridCOL = 8,
         grid = [];
     var count = 1;
     for (var row = 0; row < gridROW; row++) {
