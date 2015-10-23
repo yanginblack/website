@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+	<head>
+  		<% include head.html %>
+    </head>
+	<body>
+		<% include header.html %>
+		<div class="row head-breadcrumb"><span><a href="/">Home</a></span> > <span><a href="/projects">Projects</a></span> > <span>Autoship</span></div>
+		<div class="container">
+			<div class="row text-center"><h1>Autoship Project</h1></div>
+			<div class="row projectpage-row">
+				<div class="col-sm-4"><img class="projectpage-images" src='files/img/project/autoship/autoship1.png'></div>
+				<div class="col-sm-8">
+					<p>
+						Developed a web application for our staffs to automatically ship orders. It can extract all the satisfied orders, organize and classify them, then purchase ship labels and package lists, update order status and tracking number to our database,  and email customer for shipment — including fraud customer and duplicate order checking
+					</p>
+				</div>
+			</div>
+			<div class="row projectpage-row">
+				<div class="col-sm-8">  After log in, user can see the main panel, including the order process section, print section and error check section. It will show how many orders can be processed and shipped, and show the number of orders with special cases which requires manually check. </div>
+				<div class="col-sm-4"><img class="projectpage-images" src='files/img/project/autoship/autoship2.png'></div>
+			</div>
+			<div class="row projectpage-row">
+				<div class="col-sm-4"><img class="projectpage-images" src='files/img/project/autoship/autoship3.png'></div>
+				<div class="col-sm-4"><img class="projectpage-images" src='files/img/project/autoship/autoship4.png'></div>
+				<div class="col-sm-4">After clicked autoship, the system will process orders automatically, showing remaining time. Because of the api limitation, this system will process 20 orders a time, after those orders are purchased tracking number and updated database, it will continue another bulk. </div>
+			</div>
+			<div class="row projectpage-row">
+				<div class="col-sm-4">After all the orders processed, system will group those orders together and named a batch. User can print this batch anytime they like, print includes shipping label from easyship and packagelist. </div>
+				<div class="col-sm-4"><img class="projectpage-images" src='files/img/project/autoship/autoship6.png'></div>
+				<div class="col-sm-4"><img class="projectpage-images" src='files/img/project/autoship/autoship7.png'></div>
+			</div>
+		</div>
+		<% include footer.html %>
+	</body>
+</html>

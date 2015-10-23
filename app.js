@@ -104,6 +104,18 @@ app.get('/snow', function(request, response) {
 app.get('/memorygame', function(request, response) {
   response.render("MemoryGame");
 });
+
+app.get('/autoship', function(request, response) {
+  response.render("autoship");
+});
+
+app.get('/tomatoink', function(request, response) {
+  response.render("tomatoink");
+});
+
+app.get('/ispace', function(request, response) {
+  response.render("ispace");
+});
 /*
 app.use(function(req, res, next){
   res.status(404);

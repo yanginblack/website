@@ -1,3 +1,11 @@
+.head-breadcrumb {
+    margin-left: 30px;
+}
+
+.head-breadcrumb > span > a{
+    cursor: pointer;
+}
+
 .carousel-container {
     width: 100%;
     margin-top: -20px;
@@ -143,7 +151,29 @@
     height: 30px;
 }
 
+.projectpage-row {
+    margin-bottom: 50px;
+}
+.projectpage-images {
+    width: 300px;
+    height: 150px;
+    border: 1px solid #3399FF;
+}
 
+@media (max-width: 992px) {
+    .projectpage-images {
+    width: 200px;
+    height:100px;
+    }
+}
+
+@media (max-width: 768px) {
+    .projectpage-images {
+    width: 400px;
+    height:200px;
+    margin-left: 5%;
+    }
+}
 
 #myCanvasContainer {
     margin-top: 20px;
@@ -392,6 +422,7 @@ section h3.section-subheading {
 }
 }
 @media (min-width: 992px) {
+
 .timeline > li {
     min-height: 150px;
 }

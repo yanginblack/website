@@ -15,7 +15,7 @@ var projectApp = angular.module('projectApp', []);
 
 projectApp.controller('ProjectListCtrl', function($scope) {
   $scope.projects = [
-    {'url': '#',
+    {'url': '/tomatoink',
      'img': 'files/img/project/tomatoink.jpg',
      'category': 'CompAndSave Inc', 
      'name': '2015', 
@@ -45,7 +45,7 @@ projectApp.controller('ProjectListCtrl', function($scope) {
       }
      ]
     },    
-    {'url': '#',
+    {'url': '/autoship',
      'img': 'files/img/project/autoship.png',
      'category': 'CompAndSave Inc', 
      'name': '2014', 
