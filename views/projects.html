@@ -12,8 +12,8 @@
 					<div class="row projects" ng-repeat = "project in projects">
 						<div class="col-sm-4 text-center">
 							<a class="portfolio-box" href="{{project.url}}">
-								<img class="img-responsive" alt="" src="{{project.img}}">
-								<div class="portfolio-box-caption">
+								<img class="img-responsive" alt="" ng-src="{{project.img}}">
+								<div class="portfolio-box-caption" ng-class="{'project-inactive': !project.hasurl}">
 									<div class="portfolio-box-caption-content">
 										<div class="project-category text-faded"> {{project.category}} </div>
 										<div class="project-name">{{project.name}}</div>
@@ -27,7 +27,7 @@
 								{{project.description}}
 							</p>
 							<div class="project-icons">
-								<img ng-repeat = "icon in project.icons" class="project-icon" src="files/img/icons/{{icon.url}}" alt="icon.name">
+								<img ng-repeat = "icon in project.icons" class="project-icon" ng-src="files/img/icons/{{icon.url}}" alt="icon.name">
 							</div>
 						</div>
 					</div>
@@ -36,7 +36,7 @@
 				<div class="col-sm-4 hidden-xs">					
 					<div class="project-side" ng-repeat = "game in games">
 						<div class="row text-center">
-							<a href='{{game.url}}'><img class="project-side-image" src="{{game.img}}" alt="{{game.title}}"></a>
+							<a href='{{game.url}}'><img class="project-side-image" ng-src="{{game.img}}" alt="{{game.title}}"></a>
 
 						</div>
 						<div class="sort-divider well"> </div>

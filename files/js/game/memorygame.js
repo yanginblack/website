@@ -56,7 +56,7 @@ var tileNames = ['boat-china', 'castle', 'effiel-tower', 'golden-bridge', 'great
   var getName = function(name) {
     if (name === "") {
         name = prompt("Please input a nickname to start game");
-        if (typeof name == "undefined" || name === "") name = "Guest";
+        if (typeof name == "undefined" || name==null || name === "") name = "Guest";
         socket.emit('join', name);
     }    
     $scope.game.chatHistory.push("Welcome, " + name);
@@ -73,7 +73,7 @@ $(document).ready(function() {
     $scope.reset();
     $scope.game.hashcode = makeid();
     $scope.game.status = "Two Players";
-    $scope.game.message = "Please send the hashcode to your friend who wants to join or watch";
+    $scope.game.message = "Please send the hashcode to your friend and ask them to click join game to attend or watch";
     $scope.game.lock = true;
     $scope.game.firstStart = true;
   };
@@ -81,7 +81,8 @@ $(document).ready(function() {
 //join other people's game
   $scope.joinGame = function() {
     var hashcode = prompt("Please input your friend's invite code");
-    if (typeof hashcode === "undefined" || hashcode === "") {return;}
+    if (typeof hashcode === "undefined" || hashcode == null || hashcode === "") {return;}
+    hashcode = hashcode.trim();
     $scope.reset();
     $scope.game.hashcode = hashcode;
     $scope.game.lock = true;
@@ -218,7 +219,7 @@ $(document).ready(function() {
     this.opponent = {name:"", score: ""};
     this.chatHistory = [];
     this.grid = makeGrid(tileDeck);
-    this.message = "Game Start! Find cards with the same number";
+    this.message = "Game Start! Click any card to flip and find pairs with the same image";
     this.unmatchedPairs = tileNames.length;
     this.fliping = false;
     this.hashcode = "";

@@ -64,6 +64,11 @@
 	opacity: 40;
 }
 
+.portfolio-box-caption.project-inactive {
+    background-color: rgba(100, 95, 64, 0.9);
+    cursor: default;
+}
+
 .portfolio-box .portfolio-box-caption .portfolio-box-caption-content {
     position: absolute;
     text-align: center;
