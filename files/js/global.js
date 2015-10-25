@@ -21,7 +21,7 @@ projectApp.controller('ProjectListCtrl', function($scope) {
      'category': 'CompAndSave Inc', 
      'name': '2015', 
      'title': 'Tomatoink.com (e-commerce website)',
-     'description': 'Built an e-commerce website under Magento Platform. Created a new theme (Customize all of the website pages) and developed several extensions (Backend Optimization for business flow and order operation, customer service). Worked as team leader with a designer and a database engineer, responsible for both front-end and backend implementation. (https://www.tomatoink.com)',
+     'description': 'Built an e-commerce website under Magento Platform. Created a new theme (Customized all the pages) and developed several extensions (Backend Optimization for business flow and order filter, customer service ticket system). Worked as team leader with a designer and a database engineer, responsible for both front-end and backend implementation.',
      'icons': [
       { 'url': 'html5.png', 
         'name': 'HTML5'
@@ -52,7 +52,7 @@ projectApp.controller('ProjectListCtrl', function($scope) {
      'category': 'CompAndSave Inc', 
      'name': '2014', 
      'title': 'Autoship System',
-     'description': 'Developed a web application for our staffs to automatically ship orders. It can extract all the satisfied orders, organize and classify them, then purchase ship labels and package lists, update order status and tracking number to our database,  and email customer for shipment — including fraud customer and duplicate order checking',
+     'description': 'Developed a web application for our staffs to automatically ship orders. It can extract current satisfied orders, organize and classify orders, then purchase ship labels and print package lists, update order status and tracking number to database,  and email customer informing shipment — including fraud customer filter and duplicate order checking',
      'icons': [
       { 'url': 'html5.png', 
         'name': 'HTML5'
@@ -79,7 +79,7 @@ projectApp.controller('ProjectListCtrl', function($scope) {
      'category': 'CompAndSave Inc', 
      'name': '2014', 
      'title': 'Customer behavior tracking',
-     'description': 'Created a tracking system to record customer’s behavior on our website. Then analytics data for sending corresponding promotion emails to customer. The tracking system will record every page customer is on, how long he/she stays there and which products they are looking at or adding to the cart. If they leave without purchase, we will send coupon code for particular item. ',
+     'description': 'Created a tracking system to record customer’s behavior on our website. Then analytics data for sending corresponding promotion emails to customers. The tracking system will record every step customer takes while on our website, how long he/she stays there and which products they are looking at or adding to the cart. If they leave without purchase, we will send coupon code in the reminder email.',
      'icons': [
       { 'url': 'javascript.png', 
         'name': 'javascript'
@@ -100,7 +100,7 @@ projectApp.controller('ProjectListCtrl', function($scope) {
      'category': 'CompAndSave Inc', 
      'name': '2015', 
      'title': 'Product Report System',
-     'description': 'Created a system for our marketing members to search and select products and display its sales. It can compare with other products, change date range and show corresponding campaigns and coupon code customers were using.',
+     'description': 'Created a system for our marketing team to search and select products for sales report. It can compare with other products, change date range and show corresponding campaigns and coupon code customers were using.',
      'icons': [
       { 'url': 'html5.png', 
         'name': 'HTML5'
@@ -133,7 +133,7 @@ projectApp.controller('ProjectListCtrl', function($scope) {
      'category': 'North Carolina State University', 
      'name': '2013', 
      'title': 'Develop Graphic User Interface of iSpace',
-     'description': 'Made an User Interface for iSpace which is an indoor Robot Control Platform for testing algorithms of control and energy saving. Using Java Swing for the interface building, and create a copy under ROS (Robot Operating System).',
+     'description': 'Made an User Interface for iSpace -- which is an indoor Robot Control Platform for testing algorithms of control and energy saving. Using Java Swing for the interface building, and create a copy under ROS (Robot Operating System).',
      'icons': [
       { 'url': 'java.png', 
         'name': 'JAVA'
