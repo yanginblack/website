@@ -116,6 +116,10 @@ app.get('/tomatoink', function(request, response) {
 app.get('/ispace', function(request, response) {
   response.render("ispace");
 });
+
+app.get('/population', function(request, response) {
+  response.render("population");
+});
 /*
 app.use(function(req, res, next){
   res.status(404);
