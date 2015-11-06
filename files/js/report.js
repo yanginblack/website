@@ -2,28 +2,49 @@
 
 var reportApp = angular.module('populationReport', []);
 
-reportApp.controller('populationReportCtrl', function($scope) {
-  $scope.startYear = '1948';
+reportApp.controller('populationReportCtrl', function($scope, $interval) {
+  $scope.startYear = '1960';
   $scope.endYear ='2014';
   $scope.currentYear = '2014';
   $scope.currentCountry = "USA";
   $scope.countries = [
     "USA", 
     "China", 
-    "Japan", 
+    "India", 
     "Russia", 
-    "British"
+    "Japan"
   ];
+  $scope.playing = false;
   $scope.updateCountry = function(value) {
     $scope.currentCountry = value;
+    render_line(data, value);
   };
-
+  var run;
+  $scope.autoAdd = function() {
+    if ($scope.playing) {
+      if (angular.isDefined(run)) {
+        $scope.stopAuto();
+      }
+    } else {
+      $scope.playing = true;
+      if ($scope.currentYear >= 2014) $scope.currentYear = $scope.startYear;
+      run = $interval(function() {
+        if ($scope.currentYear < 2014 ) $scope.currentYear++;
+        else $scope.stopAuto();
+      }, 100);
+    }
+  }
+  $scope.stopAuto = function() {
+      $interval.cancel(run);
+      run = undefined;
+      $scope.playing = false;
+  }
   //bar chart
 
 
 //bar chart config
-  var margin = {top: 10, right: 10, bottom: 20, left: 60},
-    width = 400 - margin.left - margin.right,
+  var margin = {top: 10, right: 10, bottom: 20, left: 40},
+    width = 500 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
   var x_bar = d3.scale.ordinal()
     .rangeRoundBands([0, width], .4);
@@ -53,6 +74,53 @@ reportApp.controller('populationReportCtrl', function($scope) {
   });
   svg_bar.call(tip);
 
+  //bar chart config
+  var radius = Math.min(width,height)/2;
+
+  var svg_pie = d3.select(".country_pie").append("svg")
+      .attr("width", width)
+      .attr("height", height)
+    .append("g")
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");  
+
+  var color = d3.scale.ordinal()
+      .range(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]);
+  var arc = d3.svg.arc()
+      .outerRadius(radius - 10)
+      .innerRadius(0);
+
+  var pie = d3.layout.pie()
+      .sort(null)
+      .value(function(d) { return d.Value; });
+
+
+  //line chart
+  var line_x = d3.scale.linear()
+    .range([0, width]);
+//rangeRoundBands([0, width], .4);
+  var line_y = d3.scale.linear()
+      .range([height, 0]);
+
+  var line_xAxis = d3.svg.axis()
+      .scale(line_x)
+      .orient("bottom");
+
+  var line_yAxis = d3.svg.axis()
+      .scale(line_y)
+      .orient("left");
+
+  var line = d3.svg.line()
+    .x(function(d) { return line_x(d.x); })
+    .y(function(d) { return line_y(d.y); });
+
+  var line_svg = d3.select(".country_line").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+
   var dataProcessor = function(d, y) {
     d.sort(function(a, b) {return b[y] - a[y]});
     var data = [];
@@ -70,18 +138,12 @@ reportApp.controller('populationReportCtrl', function($scope) {
     return d;
   }
 
-  var setConfig = function(data) {
-    //bar chart
-
-
-  }
-
   var render = function(data) {
-
+    //bar chart
     svg_bar.selectAll("g").remove();
 
     x_bar.domain(data.map(function(d) { return d.Country; }));
-    y_bar.domain([0, 1500]);
+    y_bar.domain([0, d3.max(data, function(d) { return d.Value; })]);
 
     svg_bar.append("g")
       .attr("class", "x axis")
@@ -110,27 +172,97 @@ reportApp.controller('populationReportCtrl', function($scope) {
         .attr("y", function(d) { return y_bar(d.Value); })
         .attr("height", function(d) { return height - y_bar(d.Value); })
         .on('mouseover', tip.show)
-        .on('mouseout', tip.hide)
+        .on('mouseout', tip.hide);
+
+    //pie chart
+      svg_pie.selectAll(".arc").remove();
+      var g_pie = svg_pie.selectAll(".arc")
+        .data(pie(data))
+        .enter().append("g")
+        .attr("class", "arc");
+
+      g_pie.append("path")
+        .attr("d", arc)
+        .style("fill", function(d) { return color(d.data.Country); });
+
+      g_pie.append("text")
+        .attr("transform", function(d) {
+            var c = arc.centroid(d),
+                x = c[0],
+                y = c[1],
+                // pythagorean theorem for hypotenuse
+                h = Math.sqrt(x*x + y*y);
+            return "translate(" + (x/h * radius/1.05) +  ',' +
+               (y/h * radius/1.05) +  ")"; 
+        })
+        .attr("dy", ".35em")
+        .style("text-anchor", "middle")
+        .text(function(d) { return d.data.Country; });
   } 
+
+  var render_line = function(bulk, country) {
+    var data = [], tmpdata;
+    for (var i=0;i<bulk.length;i++) {
+      if (bulk[i]['Country'] == country ) {
+        tmpdata = bulk[i];
+        break;
+      }
+    }
+
+    for (var k in tmpdata) {
+      if (k <= $scope.currentYear)
+      data.push({'x': k, 'y': tmpdata[k]});
+    }
+  //line_x.domain([d3.min(data, function(d) { return d.x; }), d3.max(data, function(d) { return d.x; })]);
+  //line_y.domain([0, d3.max(data, function(d) { return d.y; })]);
+  line_x.domain([$scope.startYear, $scope.endYear]);
+  line_y.domain(d3.extent(data, function(d) { return d.y; }));
+
+  //line_svg.selectAll('g').remove()
+    //.append("g")
+    //.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  line_svg.selectAll("g").remove();
+  line_svg.selectAll("path").remove();
+
+  line_svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(line_xAxis);
+
+  line_svg.append("g")
+      .attr("class", "y axis")
+      .call(line_yAxis)
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Population (Million)");
+
+  line_svg.append("path")
+      .datum(data)
+      .attr("class", "line")
+      .attr("d", line);
+  }
 
   var data;
   d3.csv("files/data/data.csv", type, function(d) {
     data = d;
      var tmpdata = dataProcessor(d, $scope.currentYear);
     // console.log(tmpdata);
-     setConfig(tmpdata);
      render(tmpdata);
+     render_line(d, $scope.currentCountry);
 
   }); 
 
   $scope.$watch('currentYear', function() {
     if (data) {
       var tmpdata = dataProcessor(data, $scope.currentYear);
-      render(tmpdata);      
+      render(tmpdata);   
+      render_line(data, $scope.currentCountry);   
     }
 
   });
-
-//d3.tsv("files/data/data.tsv", type, render);  
 
 });

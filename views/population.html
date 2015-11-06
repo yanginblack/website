@@ -17,9 +17,9 @@
           <h1>Populattion report</h1>
           <p>This is some introduction</p>
           <div class="row">
-            <p class="col-sm-1"><a href="#" class="btn btn-primary" role="button">Play</a></p>
+            <p class="col-sm-1"><a href="#" class="btn btn-primary" role="button" ng-click="autoAdd()"><span ng-show="!playing">Play</span><span ng-show="playing">Stop</span></a></p>
             <p class="col-sm-10">
-              <input type="range" min="1942" max="2014" ng-model="currentYear">
+              <input type="range" min="1960" max="2014" ng-model="currentYear">
               <span class="label label-default range-year-end">{{endYear}}</span>
               <span class="label label-default range-year-start">{{startYear}}</span>
             </p>
@@ -37,10 +37,10 @@
       </div>
       <div class="col-md-4">
 
-        <div class="svg"></div>
+        <div class="country_pie"></div>
       </div>
       <div class="col-md-4">
-        <div class="svg">
+        <div class="country_line">
         </div>
         <div class="dropdown">
           <button class="btn btn-default dropdown-toggle" type="button" id="country_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -246,7 +246,7 @@ var line = d3.svg.line()
 var line_svg = d3.select(".linechart").append("svg")
     .attr("width", line_width + margin.left + margin.right)
     .attr("height", line_height + margin.top + margin.bottom)
-  .append("g")
+    .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 d3.tsv("files/data/data_line.tsv", function(error, data) {
@@ -378,11 +378,11 @@ body {
 }
 
 .bar {
-  fill: orange;
+  fill: #1f77b4;
 }
 
 .bar:hover {
-  fill: orangered ;
+  fill: #ff7f0e;
 }
 
 .x.axis path {
