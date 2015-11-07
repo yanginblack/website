@@ -7,15 +7,14 @@
 		<% include header.html %>
 		<script src="http://d3js.org/d3.v3.min.js"></script>
 		<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-    <script src="files/js/report.js"></script>
 		<div class="row head-breadcrumb"><span><a href="/">Home</a></span> > <span><a href="/projects">Projects</a></span> > <span>population report</span></div>
 
 
     <div class="row">
       <div class="container text-center">
         <div class="row">
-          <h1>Populattion report</h1>
-          <p>This is some introduction</p>
+          <h1>World's population charts</h1>
+          <p>This project is using d3JS and angularJS to show an intuitive feeling of the world's population growing.<br>The data I use is from <a href="http://data.worldbank.org/indicator/SP.POP.TOTL">The World Bank</a>. It includes population of major coutries and areas from 1960 to 2014. <br>I choose the top 10 coutry with largest population on selected year.<br>Click Play you will see the changes through years. </p>
           <div class="row">
             <p class="col-sm-1"><a href="#" class="btn btn-primary" role="button" ng-click="autoAdd()"><span ng-show="!playing">Play</span><span ng-show="playing">Stop</span></a></p>
             <p class="col-sm-10">
@@ -32,15 +31,15 @@
     </div>
 
     <div class="row">
-      <div class="col-md-4">
-        <div class="country_bar"></div>
+      <div class="col-md-6 text-center">
+        <div class="country_bar p_chart"></div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6 text-center">
 
-        <div class="country_pie"></div>
+        <div class="country_pie p_chart"></div>
       </div>
-      <div class="col-md-4">
-        <div class="country_line">
+      <div class="col-md-12 text-center">
+        <div class="country_line p_chart">
         </div>
         <div class="dropdown">
           <button class="btn btn-default dropdown-toggle" type="button" id="country_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -55,391 +54,17 @@
     </div>
 
     <div class="row text-center">
-      <h2>Populattion report of </h2>
-      <p>This is some introduction</p>
+      <h2> City Population Map </h2>
+      <p>This map is showing population of cities.<br> Each circle represents a city, position is based on longtitude and latitude of that city,<br> and radius is based on population.<br>Surprisingly, it can give us a world map. <br>Data is from <a href="https://github.com/curran/data/tree/gh-pages/geonames">GeoNames extract</a>, showing 4272 cities with population. <br>Idea is from <a href="https://github.com/curran">Curran Kelleher</a>, he finds this amazing way on his github to show city population as a map. </p>
     </div>
     <div class="row">
-      <div class="col-sm-6">
-        <div class="container svg"></div>
-      </div>
-      <div class="col-sm-6">
-        <div class="container svg"></div>
+      <div class="col-sm-12 text-center">
+        <div class="container map"></div>
       </div>
     </div>
-    <div class="row">
-      <div class="container svg"></div>
-    </div>
 
-
-
-
-    <div class="row">
-      <div class="container barchart">
-
-      </div>
-    </div>
-    <div class="row">
-      <div class="container piechart">
-          
-      </div>
-    </div>
-    <div class="row">
-      <div class="container linechart">
-          
-      </div>
-    </div>
-    <div class="row">
-      <div class="container map">
-
-      </div>
-    </div>
-<script>
-
-var margin = {top: 40, right: 20, bottom: 30, left: 80},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
-/*
-//var formatPercent = d3.format(".0%");
-
-var x = d3.scale.ordinal()
-    .rangeRoundBands([0, width], .2);
-
-var y = d3.scale.linear()
-    .range([height, 0]);
-
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom");
-
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left");
-    //.tickFormat(formatPercent);
-
-var tip = d3.tip()
-  .attr('class', 'd3-tip')
-  .offset([-10, 0])
-  .html(function(d) {
-    return "<span style='color:red'>" + d.Value + "</span>";
-  })
-
-var svg = d3.select(".barchart").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-svg.call(tip);
-
-d3.tsv("files/data/data.tsv", type, function(error, data) {
-  x.domain(data.map(function(d) { return d.City; }));
-  y.domain([0, d3.max(data, function(d) { return d.Value; })]);
-
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
-
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Population");
-
-  svg.selectAll(".bar")
-      .data(data)
-    .enter().append("rect")
-      .attr("class", "bar")
-      .attr("x", function(d) { return x(d.City); })
-      .attr("width", x.rangeBand())
-      .attr("y", function(d) { return y(d.Value); })
-      .attr("height", function(d) { return height - y(d.Value); })
-      .on('mouseover', tip.show)
-      .on('mouseout', tip.hide)
-
-});
-
-function type(d) {
-  d.Value = +d.Value;
-  return d;
-}
-*/
-</script>
-
-<script>
-var pie_width = 960, 
-    pie_height = 500, 
-    radius = Math.min(pie_width,pie_height)/2;
-
-var svg_pie = d3.select(".piechart").append("svg")
-    .attr("width", pie_width)
-    .attr("height", pie_height)
-  .append("g")
-    .attr("transform", "translate(" + pie_width / 2 + "," + pie_height / 2 + ")");  
-
-var color = d3.scale.ordinal()
-    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00", "#ff8c00", "#ff8c00", "#ff8c00"]);
-var arc = d3.svg.arc()
-    .outerRadius(radius - 10)
-    .innerRadius(0);
-
-var pie = d3.layout.pie()
-    .sort(null)
-    .value(function(d) { return d.Value; });
-
-d3.tsv("files/data/data_pie.tsv", function(error, data) {
-  
-  data.forEach(function(d) {
-    d.Value = +d.Value;
-  });
-
-  var g_pie = svg_pie.selectAll(".arc")
-      .data(pie(data))
-    .enter().append("g")
-      .attr("class", "arc");
-
-  g_pie.append("path")
-      .attr("d", arc)
-      .style("fill", function(d) { return color(d.data.City); });
-
-  g_pie.append("text")
-      .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
-      .attr("dy", ".35em")
-      .style("text-anchor", "middle")
-      .text(function(d) { return d.data.City; });
-
-});
-
-
-</script>
-
-
-<script>
-
-var line_width = 960 - margin.left - margin.right,
-    line_height = 500 - margin.top - margin.bottom;
-
-var parseDate = d3.time.format("%d-%b-%y").parse;
-
-var line_x = d3.time.scale()
-    .range([0, width]);
-
-var line_y = d3.scale.linear()
-    .range([height, 0]);
-
-var line_xAxis = d3.svg.axis()
-    .scale(line_x)
-    .orient("bottom");
-
-var line_yAxis = d3.svg.axis()
-    .scale(line_y)
-    .orient("left");
-
-var line = d3.svg.line()
-    .x(function(d) { return line_x(d.date); })
-    .y(function(d) { return line_y(d.close); });
-
-var line_svg = d3.select(".linechart").append("svg")
-    .attr("width", line_width + margin.left + margin.right)
-    .attr("height", line_height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-d3.tsv("files/data/data_line.tsv", function(error, data) {
-  if (error) throw error;
-
-  data.forEach(function(d) {
-    d.date = parseDate(d.date);
-    d.close = +d.close;
-  });
-
-  line_x.domain(d3.extent(data, function(d) { return d.date; }));
-  line_y.domain(d3.extent(data, function(d) { return d.close; }));
-
-  line_svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(line_xAxis);
-
-  line_svg.append("g")
-      .attr("class", "y axis")
-      .call(line_yAxis)
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Price ($)");
-
-  line_svg.append("path")
-      .datum(data)
-      .attr("class", "line")
-      .attr("d", line);
-});
-
-</script>
-
-  <script>
-
-      var outerWidth  = 500;
-      var outerHeight = 250;
-      var margin = { left: -50, top: 0, right: -50, bottom: 0 };
-
-      var xColumn = "longitude";
-      var yColumn = "latitude";
-      var rColumn = "population";
-      var peoplePerPixel = 100000;
-
-      var innerWidth  = outerWidth  - margin.left - margin.right;
-      var innerHeight = outerHeight - margin.top  - margin.bottom;
-
-      var svg_map = d3.select(".map").append("svg")
-        .attr("width",  outerWidth)
-        .attr("height", outerHeight);
-
-      var g_map = svg_map.append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-      var xScale = d3.scale.linear().range([0, innerWidth]);
-      var yScale = d3.scale.linear().range([innerHeight, 0]);
-      var rScale = d3.scale.sqrt();
-
-      function render(data){
-
-        xScale.domain( d3.extent(data, function (d){ return d[xColumn]; }));
-        yScale.domain( d3.extent(data, function (d){ return d[yColumn]; }));
-        rScale.domain([0, d3.max(data, function (d){ return d[rColumn]; })]);
-
-        // Compute the size of the biggest circle as a function of peoplePerPixel.
-        var peopleMax = rScale.domain()[1];
-        var rMin = 0;
-        var rMax = Math.sqrt(peopleMax / (peoplePerPixel * Math.PI));
-        rScale.range([rMin, rMax]);
-
-        var circles = g_map.selectAll("circle").data(data);
-        circles.enter().append("circle");
-        circles
-          .attr("cx", function (d){ return xScale(d[xColumn]); })
-          .attr("cy", function (d){ return yScale(d[yColumn]); })
-          .attr("r",  function (d){ return rScale(d[rColumn]); });
-        circles.exit().remove();
-      }
-
-      function type_map(d){
-        d.latitude   = +d.latitude;
-        d.longitude  = +d.longitude;
-        d.population = +d.population;
-        return d;
-      }
-
-      d3.csv("files/data/data_map.csv", type_map, render);
-
-
-    </script>
-
-
-<style>
-
-.svg {
-  width: 400px;
-  height: 300px;
-  background-color: blue;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.range-year-start {
-  float: left;
-  font-size: 1.8em;
-}
-
-.range-year-end {
-  float: right;
-  font-size: 1.5em;
-}
-
-.label-year {
-  font-size: 2.5em;
-}
-
-body {
-  font: 10px sans-serif;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.bar {
-  fill: #1f77b4;
-}
-
-.bar:hover {
-  fill: #ff7f0e;
-}
-
-.x.axis path {
-  display: none;
-}
-
-.d3-tip {
-  line-height: 1;
-  font-weight: bold;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 2px;
-}
-
-/* Creates a small triangle extender for the tooltip */
-.d3-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
-}
-
-/* Style northward tooltips differently */
-.d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
-}
-
-
-.arc path {
-  stroke: #fff;
-}
-
-
-.line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 1.5px;
-}
-
-circle {
-        fill: rgba(255, 255, 255, 0.2);
-      }
-.map {
-  background-color: black;
-}
-
-
-</style>
-		
+<link rel="stylesheet" href="files/css/report.css">
+<script src="files/js/report.js"></script>		
 		<% include footer.html %>
 	</body>
 </html>

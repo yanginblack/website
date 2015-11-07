@@ -74,6 +74,28 @@ projectApp.controller('ProjectListCtrl', function($scope) {
       }
       ]
     },
+    {'url': '/population',
+     'hasurl': true, 
+     'img': 'files/img/project/population.png',
+     'category': 'Personal Project', 
+     'name': '2015', 
+     'title': 'Population chart in D3',
+     'description': 'Created several dynamic charts of world\'s population of countries and cities. Using Angular and D3. Showing the changes of population from 1960 to 2014 with basic bar chart, pie chart and line chat.',
+     'icons': [
+      { 'url': 'javascript.png', 
+        'name': 'javascript'
+      },
+      { 'url': 'css3.png', 
+        'name': 'CSS3'
+      },
+      { 'url': 'angular.png', 
+        'name': 'Angular'
+      },
+      { 'url': 'd3js.png', 
+        'name': 'D3.js'
+      }
+      ]   
+    }, 
     {'url': '#',
      'img': 'files/img/project/customer_behavior.jpg',
      'category': 'CompAndSave Inc', 

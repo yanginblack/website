@@ -44,8 +44,8 @@ reportApp.controller('populationReportCtrl', function($scope, $interval) {
 
 //bar chart config
   var margin = {top: 10, right: 10, bottom: 20, left: 40},
-    width = 500 - margin.left - margin.right,
-    height = 300 - margin.top - margin.bottom;
+    width = 600 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
   var x_bar = d3.scale.ordinal()
     .rangeRoundBands([0, width], .4);
 
@@ -84,7 +84,7 @@ reportApp.controller('populationReportCtrl', function($scope, $interval) {
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");  
 
   var color = d3.scale.ordinal()
-      .range(["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]);
+      .range(["#ff7f0e","#1f77b4", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]);
   var arc = d3.svg.arc()
       .outerRadius(radius - 10)
       .innerRadius(0);
@@ -153,7 +153,7 @@ reportApp.controller('populationReportCtrl', function($scope, $interval) {
     svg_bar.append("g")
         .attr("class", "y axis")
         .call(yAxis_bar)
-      .append("text")
+        .append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", 6)
         .attr("dy", ".71em")
@@ -165,7 +165,7 @@ reportApp.controller('populationReportCtrl', function($scope, $interval) {
 
     svg_bar.selectAll(".bar")
         .data(data)
-      .enter().append("rect")
+        .enter().append("rect")
         .attr("class", "bar")
         .attr("x", function(d) { return x_bar(d.Country); })
         .attr("width", x_bar.rangeBand())
@@ -186,15 +186,7 @@ reportApp.controller('populationReportCtrl', function($scope, $interval) {
         .style("fill", function(d) { return color(d.data.Country); });
 
       g_pie.append("text")
-        .attr("transform", function(d) {
-            var c = arc.centroid(d),
-                x = c[0],
-                y = c[1],
-                // pythagorean theorem for hypotenuse
-                h = Math.sqrt(x*x + y*y);
-            return "translate(" + (x/h * radius/1.05) +  ',' +
-               (y/h * radius/1.05) +  ")"; 
-        })
+        .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
         .attr("dy", ".35em")
         .style("text-anchor", "middle")
         .text(function(d) { return d.data.Country; });
@@ -266,3 +258,63 @@ reportApp.controller('populationReportCtrl', function($scope, $interval) {
   });
 
 });
+//map chart
+
+
+
+(function() {
+  var width  = 800;
+  var height = 500;
+  var margin = { left: -50, top: 0, right: -50, bottom: 0 };
+
+  var xColumn = "longitude";
+  var yColumn = "latitude";
+  var rColumn = "population";
+  var peoplePerPixel = 100000;
+
+  var innerWidth  = width  - margin.left - margin.right;
+  var innerHeight = height - margin.top  - margin.bottom;
+
+  var svg_map = d3.select(".map").append("svg")
+    .attr("width",  width)
+    .attr("height", height);
+
+  var g_map = svg_map.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  var xScale = d3.scale.linear().range([0, innerWidth]);
+  var yScale = d3.scale.linear().range([innerHeight, 0]);
+  var rScale = d3.scale.sqrt();
+
+  function render(data){
+
+    xScale.domain( d3.extent(data, function (d){ return d[xColumn]; }));
+    yScale.domain( d3.extent(data, function (d){ return d[yColumn]; }));
+    rScale.domain([0, d3.max(data, function (d){ return d[rColumn]; })]);
+
+    // Compute the size of the biggest circle as a function of peoplePerPixel.
+    var peopleMax = rScale.domain()[1];
+    var rMin = 0;
+    var rMax = Math.sqrt(peopleMax / (peoplePerPixel * Math.PI));
+    rScale.range([rMin, rMax]);
+
+    var circles = g_map.selectAll("circle").data(data);
+    circles.enter().append("circle");
+    circles
+      .attr("cx", function (d){ return xScale(d[xColumn]); })
+      .attr("cy", function (d){ return yScale(d[yColumn]); })
+      .attr("r",  function (d){ return rScale(d[rColumn]); });
+    circles.exit().remove();
+  }
+
+  function type_map(d){
+    d.latitude   = +d.latitude;
+    d.longitude  = +d.longitude;
+    d.population = +d.population;
+    return d;
+  }
+
+  d3.csv("files/data/data_map.csv", type_map, render);
+
+})();
+
