@@ -73,7 +73,6 @@ io.on('connection', function(client) {
 
 app.engine('.html', require('ejs').__express);
 app.set('view engine', 'html');
-//app.set('views', __dirname + '/views');
 
 app.use('/files', express.static(__dirname + '/files'));
 
@@ -120,24 +119,5 @@ app.get('/ispace', function(request, response) {
 app.get('/population', function(request, response) {
   response.render("population");
 });
-/*
-app.use(function(req, res, next){
-  res.status(404);
 
-  // respond with html page
-  if (req.accepts('html')) {
-    res.render('404', { url: req.url });
-    return;
-  }
-
-   // respond with json
-   if (req.accepts('json')) {
-     res.send({ error: 'Not found' });
-     return;
-   }
-
-  // default to plain-text. send()
-  res.type('txt').send('Not found');
- });
-*/
 server.listen(8080);
